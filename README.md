@@ -5,7 +5,7 @@
 3. [Thong Le](mailto:javawtee@gmail.com)
 
 ## Documentations (require access permit, please contact authors)
-[Project proposal](https://docs.google.com/document/d/10pG97G09k8O78zb8AW9_QNGdXVgTcfnjmReS5ZM09fU/edit?usp=sharing)
+[Project proposal](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS%20157%20A%20-%20Team%206%20-%20Project%20proposal.docx)
 
 ## How to start (require [Node.js](https://nodejs.org/en/) and [Git](https://git-scm.com/downloads) installed)
 
