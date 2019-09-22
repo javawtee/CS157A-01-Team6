@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import UIkit from "uikit"
+import {validateEmailFormat} from 'utils/validators'
 
 const initialState = {
-    email: ''
+    email: "",
+    valid: true
 }
 
 export class ForgotPassword extends Component {
@@ -11,11 +13,16 @@ export class ForgotPassword extends Component {
         this.state = initialState
     }
     
-    handleChange = e => this.setState({[e.target.name] : e.target.value})
+    handleChange = e => this.setState({[e.target.name] : e.target.value, valid: true})
 
     handleSubmit = e => {
         e.preventDefault()
-        // validate email format here
+        let validEmail = this.state.email.length > 0 && validateEmailFormat(this.state.email)
+        if(!validEmail){
+            return this.setState({valid: false})
+        }
+
+        // TODO: call API
         alert("Send reset password to: " + this.state.email)
     }
 
@@ -25,12 +32,13 @@ export class ForgotPassword extends Component {
             <div id="forgotPassword" className="uk-flex-top" style={{ zIndex: 5 }} uk-modal="bg-close: false">
                 <div className="uk-modal-dialog uk-margin-auto-vertical">
                     <button className="uk-modal-close-default" uk-close=""></button>
-                    <div class="uk-modal-header">
-                        <h2 class="uk-modal-title">Easy to reset your password</h2>
+                    <div className="uk-modal-header">
+                        <h2 className="uk-modal-title">Easy to reset your password</h2>
                     </div>
                     <div className="uk-modal-body">
-                        <input className="uk-input" type="text" placeholder="Enter your registered email"
+                            <input id="email" className={`uk-input ${this.state.valid ? '': 'uk-form-danger'}`} type="text" placeholder="Enter your registered email"
                             name="email" onChange={this.handleChange} value={this.state.email}/>
+                        <small style={{color:"red", display: this.state.valid ? "none" : ""}}>Please enter a valid email</small>
                     </div>
                     <div className="uk-modal-footer uk-text-right">
                         <button className="uk-button uk-button-primary uk-margin-small-right" onClick={this.handleSubmit}>Submit</button>
