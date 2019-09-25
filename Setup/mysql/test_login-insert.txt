@@ -1,0 +1,6 @@
+# run scripts in create_schema-cs157a_project.sql to create schema first
+# run scripts in create_table-test-login.sql to create table
+
+use cs157a_project;
+
+insert into test_login values (4, 'new.email@domain.com', sha2('password', 0));
