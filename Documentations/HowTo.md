@@ -1,5 +1,5 @@
 ## Update (edit and push to Git) documentations
-****Don't update simultaneously with other contributors, it must be repeated one-by-one contributor with following steps**
+****Don't update simultaneously with other contributors, it must be repeated one-by-one contributor with following steps** <br/><br/>
 Requirements:
 1. Be a contributor to the project
 2. Can be done with [Git CLI/Bash](https://gitforwindows.org/) or [Github Desktop](https://desktop.github.com/)
