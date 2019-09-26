@@ -16,7 +16,16 @@
 Open cmd (for Windows) or terminal (for Linux-based OS)
 ```
 1. git clone https://github.com/javawtee/CS157A-01-Team6.git <local_repo_name>
+
 ```
+
+**Server (Express.js)**
+```
+2. cd <local_repo_name>/server
+3. npm install
+4. npm run start
+```
+
 **Client (React)**
 ```
 2. cd <local_repo_name>/client
@@ -25,10 +34,3 @@ Open cmd (for Windows) or terminal (for Linux-based OS)
 ```
 Browser will automatically open to http://localhost:3000 or http://127.0.0.1:3000
 
-**Server (Express.js)**
-```
-2. cd <local_repo_name>/server
-3. npm install
-4. npm run start
-```
-Browser will automatically open to http://localhost:5000 or http://127.0.0.1:5000
