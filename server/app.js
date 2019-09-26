@@ -1,8 +1,19 @@
 var createError = require('http-errors');
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser')
 var logger = require('morgan');
+
+const {
+  // Can add port and NODE_ENV here.
+
+  // secret needs to be based on a better string
+  SESS_SECRET='need a good string to use for secretkeeping',
+  SESS_NAME='sid',
+  SESS_LIFETIME = 1000 * 60 * 30 // 30 minute timeout 
+}
 
 var app = express();
 
@@ -15,6 +26,43 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//bodyparser will be needed to get values from session data.
+app.use(bodyParser.urlencoded({
+    extended: true // default but must be passed explicitly
+}))
+
+/*
+ Depending on which store we use, we need
+  const store = new (storename)){
+    host: 'localhost', port: 3693, pass: 'secret'
+  })
+*/
+app.use(session( {
+  // Session id for the cookie. defaults to 'connect.sid'
+  name: SESS_NAME, 
+  // Whether to for-save sessions back to store, even if if they were not modified
+  // deprecated, ensure it is explicitly set to false
+  resave: false, 
+  // whether to force-save uninitialized sessions to the store. Don't want to
+  // save empty sessions. 
+  saveUninitialized: false, 
+  //store
+
+  // secret key to sign the session ID. it validates the cookies
+  // to make sure they weren't edited on the client. 
+  secret: SESS_SECRET,  
+  cookie: {
+    // set the time before the cookie expires.
+    maxAxe: SESS_LIFETIME,
+    // controls how cookies are sent with cross=site requests.
+    // could cause problems in older browsers, shouldn't matter for project
+    // set it to true because it should do no harm
+    sameSite: true 
+    // Not needed but can be set if security becomes a concern.   
+    //secure: IN_PROD
+  }
+}))
 
 app.use('/', require('./routes'))
 
