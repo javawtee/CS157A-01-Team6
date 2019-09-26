@@ -8,32 +8,24 @@ const NavBar = props => {
                 <div className="uk-navbar-left">
 
                     <ul className="uk-navbar-nav">
-                        <li className="uk-active"><a href="#">Welcome</a></li>
-                        <li>
-                            <a href="#">Profile</a>
-                            <div className="uk-navbar-dropdown">
-                                <ul className="uk-nav uk-navbar-dropdown-nav">
-                                    <li className="uk-active"><a href="#">Active</a></li>
-                                    <li><a href="#">Profile</a></li>
-                                </ul>
-                            </div>
-
-                            <a href="#">Search</a>
-                            <div className="uk-navbar-dropdown">
-                                <ul className="uk-nav uk-navbar-dropdown-nav">
-                                    <li className="uk-active"><a href="#">Active</a></li>
-                                    <li><a href="#">Search</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li><a href="#">Sign Out</a></li>
+                        <li className="uk-active"><a href="ert#">Home</a></li>
+                        <li className = "uk-active"><a href="ert#">Booking</a></li>
                     </ul>
 
+                    <div className="uk-navbar-right">
+                    <ul className="uk-navbar-nav">
+                        <li className="uk-active"><a href="ert#">Profile</a></li>
+                        <li className = "uk-active"><a href="ert#">Sign out</a></li>
+                        <form action = "javascript.void(0)">
+                            <input class = "uk-input uk-form-width-medium" type= "text" placeholder = "previous journey"></input>
+                        </form>
+                    </ul>
+                </div>
                 </div>
 
             </nav>
             {props.content}
-            <button onClick={() => alert('abc')}>ABC</button>
+            <button onClick={() => alert('abc')}>Notification</button>
         </React.Fragment>
     )
 }
