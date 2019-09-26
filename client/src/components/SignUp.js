@@ -8,14 +8,14 @@ const initialState = {
     lastName: '',
     signupEmail: '',
     confirmEmail: '',
-    password: '',
+    signupPassword: '',
     confirmPassword: '',
     validfirstName: true,
     validmiddleInitial: true,
     validlastName: true,
     validsignupEmail: true,
     validconfirmEmail: true,
-    validpassword: true,
+    validsignupPassword: true,
     validconfirmPassword: true,
 }
 
@@ -97,8 +97,8 @@ export class SignUp extends Component {
                             </div>
                             <div className="uk-width-1-1">
                                 <label className="uk-form-label uk-text-bold" htmlFor="form-stacked-text">Password</label>
-                                <input id="password" className={`uk-input ${this.state.validpassword ? '' : 'uk-form-danger'}`} type="password" placeholder="Password"
-                                    name="password" onChange={this.handleChange} value={this.state.password} />
+                                <input id="signupPassword" className={`uk-input ${this.state.validsignupPassword ? '' : 'uk-form-danger'}`} type="password" placeholder="Password"
+                                    name="signupPassword" onChange={this.handleChange} value={this.state.signupPassword} />
                                 <small style={{ color: "red", display: this.state.validpassword ? "none" : "" }}>Password is too simple</small>
                                 <p style={{marginTop: '1px'}}>
                                     <small>* Password must have at least 6 characters</small><br/>
