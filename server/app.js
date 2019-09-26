@@ -13,7 +13,7 @@ const {
   SESS_SECRET='need a good string to use for secretkeeping',
   SESS_NAME='sid',
   SESS_LIFETIME = 1000 * 60 * 30 // 30 minute timeout 
-}
+} = process.env
 
 var app = express();
 
