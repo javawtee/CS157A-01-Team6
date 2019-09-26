@@ -4,8 +4,12 @@
 2. [John McGinley](mailto:johnpatmcginley@gmail.com)
 3. [Thong Le](mailto:javawtee@gmail.com)
 
-## Documentations (require access permit, please contact authors)
-[Project proposal](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS%20157%20A%20-%20Team%206%20-%20Project%20proposal.docx)
+## Documentations
+[Project proposal](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS157A-Team6-Project_proposal.docx)<br/>
+[Requirement report](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS157A-Team6-Requirement_report.docx)
+
+#### Our project is in development, so that Apache is not being used
+#### Assumed MySQL is set up properly as our setup, or check [this](https://github.com/javawtee/CS157A-01-Team6/tree/master/Setup/mysql)
 
 ## How to start (require [Node.js](https://nodejs.org/en/) and [Git](https://git-scm.com/downloads) installed)
 
