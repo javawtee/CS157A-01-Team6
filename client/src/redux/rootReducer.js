@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 
-import app from './reducers/app'
+import background from './reducers/background'
 import user from './reducers/user'
 
 // component reducers
@@ -8,6 +8,6 @@ import user from './reducers/user'
 // feature reducers
 
 export default combineReducers({
-    app,
+    background,
     user,
 });
