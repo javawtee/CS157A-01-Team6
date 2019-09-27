@@ -1,23 +1,42 @@
-import React from 'react';
+import React, { Component } from 'react'
 import 'stylesheets/App.css';
-import { Switch, Route } from 'react-router-dom'
-import Welcome from 'pages/Welcome'
-import P404 from 'pages/P404'
+import { Redirect, Switch, Route } from 'react-router-dom'
+import { connect } from 'react-redux'
 import Dashboard from 'pages/Dashboard'
 import NavBar from 'components/NavBar'
+import Welcome from 'pages/Welcome'
+import P404 from 'pages/P404'
 
 
-function App() {
-  return (
-    <div className="App">
-      <Switch>
-        <Route exact path="/" render={() => <Welcome />} />
-        <Route exact path="/dashboard" render={() => <NavBar content={<Dashboard />} />} />
-        <Route exact path="*" render={() => <P404 />} />
-      </Switch>
-    </div>
-  );
+class App extends Component {
+  componentDidMount = () => {
+    this.props.checkAuthentication()
+  }
+
+  AuthenticatedRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (this.props.authenticated ? <Component {...props} /> : <Redirect to="/" />)} />
+  )
+
+  render() {
+    return (
+      <div className="App">
+        <Switch>
+          <Route exact path="/" render={() => this.props.authenticated ? <Redirect to="/dashboard" /> : <Welcome />} />
+          <this.AuthenticatedRoute path="/dashboard" component={() => <NavBar content={<Dashboard />} />} />
+          <Route exact path="*" render={() => <P404 />} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  authenticated: state.background.authenticated
+})
+
+const mapDispatchToProps = dispatch => ({
+  checkAuthentication: () => dispatch({ type: "SIGNED_IN" })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 

@@ -55,4 +55,8 @@ Search.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
+<<<<<<< Updated upstream
 export default Search;
+=======
+export default withStyles(styles)(Search);
+>>>>>>> Stashed changes

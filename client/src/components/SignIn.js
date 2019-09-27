@@ -33,9 +33,7 @@ export class SignIn extends Component {
             return this.setState({validuserid, validpassword})
         }
 
-        // TODO: call API
-        this.props.authenticate(this.state.userid, this.state.password)
-        this.clearForm()
+        this.props.signin(this.state.userid, this.state.password)
     }
 
     render() {
@@ -83,11 +81,11 @@ export class SignIn extends Component {
 }
 
 const mapStateToProps = state => ({ 
-    userId: state.user.id
+    authenticated: state.background.authenticated
  })
 
 const mapDispatchToProps = dispatch => ({
-    authenticate: (userId, password) => dispatch({ type: "user/auth", coin: {userId, password}})
+    signin: (userId, password) => dispatch({ type: "SIGN_IN", coin: {userId, password}})
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

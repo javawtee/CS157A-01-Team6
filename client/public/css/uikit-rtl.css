@@ -4024,7 +4024,7 @@ ul.uk-nav-sub {
  * 4. Align sub groups for centered navbar
  */
 .uk-navbar-left {
-  margin-right: auto;
+  margin-right: 0.50;
 }
 .uk-navbar-center:only-child {
   margin-right: auto;
