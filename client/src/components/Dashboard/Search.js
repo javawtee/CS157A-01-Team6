@@ -1,37 +1,4 @@
 import React, {Component} from 'react';
-import { withStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import { DateFormatInput } from "material-ui-next-pickers";
-import Button from "@material-ui/core/Button";
-import FlightTakeoff from "@material-ui/icons/FlightTakeoff";
-
-const styles = theme => ({
-	root: {
-		display: "flex",
-		flexWrap: "wrap",
-		margin: "10px",
-		alignItems: "center",
-		justifyContent: "center"
-	},
-	formControl: {
-		margin: theme.spacing.unit,
-		minWidth: 150
-	},
-	selectEmpty: {
-		marginTop: theme.spacing.unit * 2
-	},
-	dateSelect: {
-		marginTop: "16px"
-	},
-	rightIcon: {
-		marginLeft: theme.spacing.unit
-	},
-	button: {
-		marginTop: "16px"
-	}
-});
 
 class Search extends Component {
 
@@ -40,8 +7,8 @@ class Search extends Component {
         to = "",
         date = "",
         Flightclass = ""
-    };
-
+	};
+	
 	async componentDidMount() {
 		const rawResponse = await fetch(
 			"https://dev-sandbox-api.airhob.com/sandboxapi/flights/v1.3/search",
@@ -148,4 +115,4 @@ Search.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Search);
+export default Search;
