@@ -3,9 +3,15 @@ const types = {
     LOADING: "LOADING",
     LOADED: "LOADED",
 
+    // Background
+    SIGNED_IN: "SIGNED_IN",
+    SET_AUTHENTICATED: "SET_AUTHENTICATED",
+    SET_UNAUTHENTICATED: "SET_UNAUTHENTICATED",
+    
     // User
-    AUTH_USER: "user/auth",
-    SET_USER: "SET_USER"
+    SIGN_IN: "SIGN_IN",
+    SET_USER: "SET_USER",
+    SIGN_OUT: "SIGN_OUT"
 
 }
 

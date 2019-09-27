@@ -1,7 +1,7 @@
 import types from '../types'
 
 const initialState = {
-    id: -1
+    token: undefined
 }
 
 export default function userReducer(state = initialState, action) {
