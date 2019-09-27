@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const conn = require('./api/dalMySQL')
+const conn = require('./api/connector')
 
 router.get('/', (req, res, next) => {
   res.status(200).send('HI, we are TEAM 6')
@@ -22,14 +22,14 @@ router.get('/user/list', (req, res, next) => {
   })
 });
 
-router.post('/signin', (req, res, next) => {
+router.post('/user/auth', (req, res, next) => {
   conn.query('select count(id) as C, id from test_login where user_id=? and password=sha2(?,0);',
     [req.body.userId, req.body.password], (err, result) => {
       if(err) res.status(500).send(err)
       if(result[0].C == 0)
-        res.status(200).send('Email/ password is not correct')
+        res.status(200).json('Email/ password is not correct')
       else 
-        res.jsonp(result[0].id)
+        res.status(200).json("Successfully Signed in")
   })
 })
 

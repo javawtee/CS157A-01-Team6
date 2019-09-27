@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
 
 const initialState = {
     userid: "",
-    password: ""
+    password: "",
+    validuserid: true,
+    validpassword: true,
 }
 
 export class SignIn extends Component {
@@ -12,26 +15,27 @@ export class SignIn extends Component {
     }
 
     handleOnFocus = e => {
-        document.getElementById(e.target.id).className = "uk-input"
         if(e.target.id === "password") this.setState({password: ""})
     }
 
-    handleChange = e => this.setState({ [e.target.name]: e.target.value })
+    handleChange = e => {
+        let removedWarnFrom = `valid${e.target.id}`
+        this.setState({ [e.target.name]: e.target.value, [removedWarnFrom]: true })
+    }
 
     clearForm = e => this.setState(initialState)
 
     submitSignIn = e => {
         e.preventDefault()
-        let validUserId = this.state.userid.length > 0
-        let validPassword = this.state.password.length > 0
-        if (!validUserId || !validPassword) {
-            document.getElementById("userid").className += " uk-form-danger"
-            document.getElementById("password").className += " uk-form-danger"
-            return
+        let validuserid = this.state.userid.length > 0
+        let validpassword = this.state.password.length > 0
+        if (!validuserid || !validpassword) {
+            return this.setState({validuserid, validpassword})
         }
 
         // TODO: call API
-        alert(`User ID [${this.state.userid}] and password [${this.state.password}] are valid`)
+        this.props.authenticate(this.state.userid, this.state.password)
+        this.clearForm()
     }
 
     render() {
@@ -41,15 +45,16 @@ export class SignIn extends Component {
                     <div className="uk-child-width-1-1">
                         <div className="uk-inline">
                             <span className="uk-form-icon" uk-icon="icon: user"></span>
-                            <input id="userid" className="uk-input" onFocus={this.handleOnFocus}
+                            <input id="userid" className={`uk-input ${this.state.validuserid ? "" : "uk-form-danger"}`}
                                 name="userid" onChange={this.handleChange} value={this.state.userid} placeholder="Email" />
                         </div>
                     </div>
                     <div className="uk-margin uk-child-width-1-1">
                         <div className="uk-inline uk-form-password">
                             <span className="uk-form-icon" uk-icon="icon: lock"></span>
-                            <input id="password" className="uk-input" type="password" onFocus={this.handleOnFocus}
-                                name="password" onChange={this.handleChange} value={this.state.password} placeholder="Password" />
+                            <input id="password" className={`uk-input ${this.state.validpassword ? "" : "uk-form-danger"}`} 
+                                type="password" onFocus={this.handleOnFocus} onChange={this.handleChange} 
+                                name="password" value={this.state.password} placeholder="Password" />
                         </div>
                     </div>
                     <div className="uk-margin-small uk-child-width-1-1">
@@ -77,4 +82,12 @@ export class SignIn extends Component {
     }
 }
 
-export default SignIn
+const mapStateToProps = state => ({ 
+    userId: state.user.id
+ })
+
+const mapDispatchToProps = dispatch => ({
+    authenticate: (userId, password) => dispatch({ type: "user/auth", coin: {userId, password}})
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
