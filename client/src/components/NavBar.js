@@ -7,7 +7,7 @@ const NavBar = props => {
 
                 <div className="uk-navbar-left">
                     <ul className="uk-navbar-nav">
-                        <button className="uk-button uk-button-default"><a style={{color:"red"}}   href="ert#">
+                        <button className="uk-button uk-button-default"><a href="ert#">
                             <span class="uk-icon uk-margin-small-right" uk-icon="icon: home">
                                 </span>Home</a></button>
                         <button className="uk-button uk-button-default"><a href="ert#">
