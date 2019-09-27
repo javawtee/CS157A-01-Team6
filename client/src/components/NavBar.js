@@ -6,12 +6,10 @@ const NavBar = props => {
             <nav className="uk-navbar-container" uk-navbar>
 
                 <div className="uk-navbar-left">
-
                     <ul className="uk-navbar-nav">
                         <li className="uk-active"><a href="ert#">Home</a></li>
                         <li className = "uk-active"><a href="ert#">Booking</a></li>
                     </ul>
-
                     <div className="uk-navbar-right">
                     <ul className="uk-navbar-nav">
                         <li className="uk-active"><a href="ert#">Profile</a></li>
