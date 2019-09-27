@@ -14,17 +14,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-//app.use('/', express.static(path.join(__dirname, 'demo')));
-//require('./routes')
-app.use('/', require('./routes'))
 
 const {
   // Can add port and NODE_ENV here.
 
   // secret needs to be based on a better string
-  SESS_SECRET='secret',
-  SESS_NAME='sid',
-  SESS_LIFETIME = 1000 * 60 * 30 // 30 minute timeout 
+  SESS_SECRET='team6!@secret',
+  SESS_NAME= 'sid' ,
+  SESS_LIFETIME = 1000 * 60 * 60 // 60 minute expiration
 } = process.env
 
 /*
@@ -58,6 +55,10 @@ app.use(session( {
     //secure: IN_PROD
   }
 }))
+
+//app.use('/', express.static(path.join(__dirname, 'demo')));
+//require('./routes')
+app.use('/', require('./api/routes'))
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
