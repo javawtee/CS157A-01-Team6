@@ -8,34 +8,6 @@ class Search extends Component {
         date = "",
         Flightclass = ""
 	};
-	
-	async componentDidMount() {
-		const rawResponse = await fetch(
-			"https://dev-sandbox-api.airhob.com/sandboxapi/flights/v1.3/search",
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					apikey: "ce92cc91-5d43-4",
-					mode: "sandbox"
-				},
-				body: JSON.stringify({
-					TripType: "O",
-					NoOfAdults: 1,
-					NoOfChilds: 0,
-					NoOfInfants: 0,
-					ClassType: "Economy",
-					OriginDestination: [
-						{ Origin: "SFO", Destination: "LAX", TravelDate: "04/23/2018" }
-					],
-					Currency: "USD"
-				})
-			}
-		);
-		const content = await rawResponse.json();
-
-		console.log(content);
-	}
 
 	onChangeDate = date => {
 		console.log("Date: ", date);
@@ -51,62 +23,30 @@ class Search extends Component {
 		const { date } = this.state;
 
 		return (
-			<div className={classes.root}>
-				<FormControl className={classes.formControl}>
-					<InputLabel htmlFor="age-native-simple">From</InputLabel>
-					<Select
-						native
-						value={this.state.from}
-						onChange={this.handleChange("from")}
-						inputProps={{
-							from: "from",
-							id: "age-native-simple"
-						}}
-					>
-						<option value="" />
-						<option value={"STO"}>San Francisco</option>
-						<option value={"HOU"}>Houston</option>
-						<option value={"LVI"}>Las Vegas</option>
-					</Select>
-				</FormControl>
-				<FormControl className={classes.formControl}>
-					<InputLabel htmlFor="age-native-simple">Destination</InputLabel>
-					<Select
-						native
-						value={this.state.destination}
-						onChange={this.handleChange("destination")}
-						inputProps={{
-							destionation: "destionation",
-							id: "age-native-simple"
-						}}
-					>
-						<option value="" />
-						<option value={"STO"}>San Francisco</option>
-						<option value={"HOU"}>Houston</option>
-						<option value={"LVI"}>Las Vegas</option>
-					</Select>
-				</FormControl>
+		<div className="uk-card uk-card-default uk-card-body uk-align-center">
 
-				{/* Date Component: https://github.com/chingyawhao/material-ui-next-pickers */}
-				<FormControl className={classes.formControl}>
-					<DateFormatInput
-						name="date-input"
-						value={date}
-						onChange={this.onChangeDate}
-						className={classes.dateSelect}
-					/>
-				</FormControl>
-				<FormControl>
-					<Button
-						variant="contained"
-						color="secondary"
-						className={classes.button}
-					>
-						Send
-						<FlightTakeoff className={classes.rightIcon}>send</FlightTakeoff>
-					</Button>
-				</FormControl>
-			</div>
+				<div class="uk-margin">
+					<input class="uk-input" type="text" placeholder="Flying From: "></input>
+				</div>
+
+				<div class="uk-margin">
+					<input class="uk-input" type="text" placeholder="Flying To: "></input>
+				</div>
+
+				<div class="uk-margin">
+					<select class="uk-select">
+						<option>Adult</option>
+						<option>Child</option>
+						<option>Infant</option>
+						</select>
+				</div>
+				<form action>
+                            <input class = "uk-input uk-form-width-medium" type= "text" placeholder = "previous journey"></input>
+                            <button class="uk-button uk-button-default">
+                                <span class="uk-icon uk-margin-small-right" uk-icon="icon: search">
+                                </span>Go</button>
+                </form>
+		</div>
 		);
 	}
 }
