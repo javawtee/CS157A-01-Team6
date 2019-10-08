@@ -37,12 +37,12 @@ export class SignUp extends Component {
         let validmiddleInitial = this.state.middleInitial.length === 0 || (this.state.middleInitial.length > 0 && isNaN(this.state.middleInitial))
         let validsignupEmail = this.state.signupEmail.length > 0 && validateEmailFormat(this.state.signupEmail)
         let validconfirmEmail = this.state.confirmEmail.length > 0 && this.state.confirmEmail === this.state.signupEmail
-        let validpassword = this.state.password.length > 5 && validateStrongPassword(this.state.password)
-        let validconfirmPassword = this.state.confirmPassword.length > 5 && this.state.confirmPassword === this.state.password
-        if (!validfirstName || !validlastName || !validmiddleInitial || !validsignupEmail || !validconfirmEmail || !validpassword || !validconfirmPassword) {
+        let validsignupPassword = this.state.signupPassword.length > 5 && validateStrongPassword(this.state.signupPassword)
+        let validconfirmPassword = this.state.confirmPassword.length > 5 && this.state.confirmPassword === this.state.signupPassword
+        if (!validfirstName || !validlastName || !validmiddleInitial || !validsignupEmail || !validconfirmEmail || !validsignupPassword || !validconfirmPassword) {
             return this.setState({ 
                 validfirstName, validlastName, validmiddleInitial, 
-                validsignupEmail, validconfirmEmail, validpassword, 
+                validsignupEmail, validconfirmEmail, validsignupPassword, 
                 validconfirmPassword 
             })
         }
@@ -99,7 +99,7 @@ export class SignUp extends Component {
                                 <label className="uk-form-label uk-text-bold" htmlFor="form-stacked-text">Password</label>
                                 <input id="signupPassword" className={`uk-input ${this.state.validsignupPassword ? '' : 'uk-form-danger'}`} type="password" placeholder="Password"
                                     name="signupPassword" onChange={this.handleChange} value={this.state.signupPassword} />
-                                <small style={{ color: "red", display: this.state.validpassword ? "none" : "" }}>Password is too simple</small>
+                                <small style={{ color: "red", display: this.state.validsignupPassword ? "none" : "" }}>Password is too simple</small>
                                 <p style={{marginTop: '1px'}}>
                                     <small>* Password must have at least 6 characters</small><br/>
                                     <small>* Password must contain a letter or a number</small><br/>
