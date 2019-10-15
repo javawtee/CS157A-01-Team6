@@ -6,8 +6,9 @@
 
 ## Documentations
 [Project proposal](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS157A-Team6-Project_proposal.docx)<br/>
-[Requirement report](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS157A-Team6-Requirement_report.docx)
-[Database Design](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS%20157A-Team6-DB_Design.docx)
+[Requirement report](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS157A-Team6-Requirement_report.docx)<br/>
+[Database Design](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS%20157A-Team6-DB_Design.docx)<br/>
+[Database Design-revised](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS%20157A-Team6-DB_Design_v2.docx)
 
 #### Our project is in development, so that Apache is not being used
 #### Assumed MySQL is set up properly as our setup (create schema and table), or check [this](https://github.com/javawtee/CS157A-01-Team6/tree/master/Setup/mysql)
