@@ -46,7 +46,7 @@ app.use(session( {
   secret: SESS_SECRET,  
   cookie: {
     // set the time before the cookie expires.
-    maxAxe: SESS_LIFETIME,
+    maxAge: SESS_LIFETIME,
     // controls how cookies are sent with cross-site requests.
     // could cause problems in older browsers, shouldn't matter for project
     // set it to true because it should do no harm
