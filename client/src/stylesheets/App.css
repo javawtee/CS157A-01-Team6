@@ -4,3 +4,16 @@
   padding: 0;
   line-height: 1.5;
 }
+
+.react-date-picker {
+    display: inline-flex;
+    position: relative;
+    width: 100%;
+}
+
+.react-date-picker__wrapper {
+  border: 1px solid #e5e5e5 !important;
+  height: 40px;
+  max-width: 120%;
+  width: 120%;
+}
