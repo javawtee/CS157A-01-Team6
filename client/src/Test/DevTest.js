@@ -1,5 +1,6 @@
 import React from "react";
-import SearchField from "components/SearchField";
+import FlightSearchResults from "components/FlightSearch/FlightSearchResults";
+import SearchField from "../components/FlightSearch/SearchField";
 
 export default function DevTest() {
   return (
@@ -15,8 +16,8 @@ export default function DevTest() {
       <hr style={{ borderTop: "4px solid #151414" }} />
 
       {/* Add Component here */}
-
       <SearchField />
+      <FlightSearchResults />
     </div>
   );
 }

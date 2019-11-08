@@ -5,15 +5,23 @@
   line-height: 1.5;
 }
 
-.react-date-picker {
-    display: inline-flex;
-    position: relative;
-    width: 100%;
+*+.uk-grid-margin, .uk-grid>.uk-grid-margin, .uk-grid+.uk-grid {
+  margin-top: 15px;
 }
 
-.react-date-picker__wrapper {
-  border: 1px solid #e5e5e5 !important;
-  height: 40px;
-  max-width: 120%;
-  width: 120%;
+.react-datepicker-wrapper {
+  display: "block" !important;
+}
+
+.react-datepicker__input-container {
+  width: 65%;
+}
+
+.suggestion-list div:hover, .suggestion-item-active {
+  background-color: DodgerBlue !important;
+  color: white;
+}
+
+#flight-search-result {
+
 }
