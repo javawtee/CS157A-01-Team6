@@ -1,0 +1,7 @@
+1. ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+Solution: Check mysql connector config, given credentials might not be correct.
+Test your credetial by using terminal/ cmd, type the following command:
+	mysql -u <user_name> -p
+	<Enter your password>
+
+2.

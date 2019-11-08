@@ -28,7 +28,7 @@ exports.signIn = (req, res, next) => {
         conn.query('select count(id) as C, id, user_name as name from test_login where user_id=? and password=sha2(?,0);',
             [req.body.userId, req.body.password], (err, result) => {
                 if (err) res.status(500).send(err)
-                if (result[0].C == 0)
+                if (result === undefined || result[0].C === 0)
                     res.jsonp(undefined)
                 else {
                     delete result[0].C
