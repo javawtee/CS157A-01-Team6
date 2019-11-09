@@ -7,8 +7,11 @@ class NavBar extends Component {
             <React.Fragment>
                 <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
                     <nav className="uk-navbar-container" uk-navbar="">
-                        <div className="uk-navbar-left">
+                        <div className="uk-navbar-center">
                             <ul className="uk-navbar-nav">
+                            <li className={this.props.profile ? "uk-active" : ""}><a href="/dashBoard">
+                                    Home
+                            </a></li>
                                 <li className={this.props.profile ? "uk-active" : ""}><a href="/profile">
                                     User Profile
                             </a></li>
