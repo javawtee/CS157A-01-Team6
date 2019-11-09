@@ -59,7 +59,7 @@ export default function SearchField(props) {
 
   return (
     <form
-      className='uk-margin-large-left uk-card uk-card-default uk-card-small uk-card-body uk-grid-small uk-width-1-2@s' uk-grid=''
+      className='uk-margin-auto uk-margin-small-top uk-card uk-card-default uk-card-small uk-card-body uk-grid-small uk-width-1-2@s' uk-grid=''
       onSubmit={handleSubmit}
     >
       <div className='uk-card-header'><h4>Book a Flight</h4></div>

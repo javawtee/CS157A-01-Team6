@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { format } from 'date-fns'
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { generateOptions } from 'utils/generators'
 //testing purpose
 import flightTimeOptions from 'models/flightTimeOptions';
 import sortByOptions from 'models/sortByOptions';
+import FlightSummary from '../FlightSummary';
 
 // props:
 // type (Depart || Return) - required
@@ -32,22 +32,7 @@ export default function ResultHeader(props) {
 
     return (
         <div id="flight-search-result" className="uk-margin-auto uk-grid-small" uk-grid=''>
-            <div className="uk-margin-auto@s uk-width-1-1" uk-grid=''>
-                <div className="uk-width-1-4@s uk-width-1-5@m">
-                    {TYPE} Flight <br />
-                    <span className="uk-width-1-1 uk-text-large uk-text-bold">
-                        San Jose <span uk-icon="icon: arrow-right"></span> Las Vegas
-                    </span>
-                    <br />
-                    <a>Modify</a>
-                </div>
-                <div className="uk-width-1-4@s uk-width-1-5@m">
-                    Flight Time <br />
-                    <span className="uk-width-1-1 uk-text-large uk-text-bold">
-                        {format(date, "iiii MMM dd, yyyy")}
-                    </span>
-                </div>
-            </div>
+            <FlightSummary />
             <hr className="uk-width-1-1" />
             <div className="uk-margin-auto@s uk-margin-remove-bottomuk-width-1-1 uk-padding-small" uk-grid=''>
                 <div className="uk-width-1-3 uk-width-1-5@m">

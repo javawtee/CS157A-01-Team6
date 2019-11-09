@@ -22,6 +22,11 @@
   color: white;
 }
 
-#flight-search-result {
+.uk-grid {
+  margin: 0;
+  padding: 0;
+}
 
+.uk-grid>* {
+  padding:10px;
 }
