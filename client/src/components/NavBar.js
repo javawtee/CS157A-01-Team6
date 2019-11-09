@@ -7,12 +7,12 @@ class NavBar extends Component {
             <React.Fragment>
                 <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
                     <nav className="uk-navbar-container" uk-navbar="">
-                        <div className="uk-navbar-center">
+                        <div className="uk-navbar-left">
                             <ul className="uk-navbar-nav">
                             <li className={this.props.profile ? "uk-active" : ""}><a href="/dashBoard">
                                     Home
                             </a></li>
-                                <li className={this.props.profile ? "uk-active" : ""}><a href="/profile">
+                                <li className={this.props.profile ? "uk-active" : ""}><a href="/userprofile">
                                     User Profile
                             </a></li>
                                 <li className={this.props.booking ? "uk-active" : ""}><a href="/booking">
@@ -25,9 +25,7 @@ class NavBar extends Component {
                         </div>
                     </nav>
                 </div>
-                <div style={{ backgroundColor: "#006994" }} uk-height-viewport="offset-top: true">
-                    {this.props.content}
-                </div>
+                <div uk-height-viewport="offset-top: true">{this.props.content}</div>
             </React.Fragment>
         )
     }
