@@ -17,19 +17,17 @@ class NavBar extends Component {
                         </ul>
                         <div className="uk-navbar-right">
                             <ul className="uk-navbar-nav">
-                                <button className="uk-button uk-button-default">
-                                    <span className="uk-icon uk-margin-small-right" uk-icon="icon: info" />
-                                    Profile</button>
-                                <button className="uk-button uk-button-default" onClick={() => this.props.signOut()}>
-                                    <span className="uk-icon uk-margin-small-right" uk-icon="icon: sign-out" />
-                                    Sign out
-                                </button>
-                                {/*<form action = "javascript.void(0)">
-                                <input className= "uk-input uk-form-width-medium" type= "text" placeholder = "previous journey"></input>
-                                <button className="uk-button uk-button-default">
-                                    <span className="uk-icon uk-margin-small-right" uk-icon="icon: search">
-                                    </span>Find</button>
-                                </form>*/}
+                                <button className={this.props.home ? "uk-active" : ""}><span className="uk-icon uk-margin-small-right" uk-icon="icon: world" />
+                                <a href="/dashboard">HOME</a></button>
+                                <li className={this.props.profile ? "uk-active" : ""}><a href="/profile">
+                                    User Profile
+                            </a></li>
+                                <li className={this.props.booking ? "uk-active" : ""}><a href="/booking">
+                                    Booking Flight
+                            </a></li>
+                                <li><a href="#sign-out" onClick={e => { e.preventDefault(); this.props.signOut() }}>
+                                    Sign Out
+                            </a></li>
                             </ul>
                         </div>
                     </div>
