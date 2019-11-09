@@ -4,3 +4,29 @@
   padding: 0;
   line-height: 1.5;
 }
+
+*+.uk-grid-margin, .uk-grid>.uk-grid-margin, .uk-grid+.uk-grid {
+  margin-top: 15px;
+}
+
+.react-datepicker-wrapper {
+  display: "block" !important;
+}
+
+.react-datepicker__input-container {
+  width: 65%;
+}
+
+.suggestion-list div:hover, .suggestion-item-active {
+  background-color: DodgerBlue !important;
+  color: white;
+}
+
+.uk-grid {
+  margin: 0;
+  padding: 0;
+}
+
+.uk-grid>* {
+  padding:10px;
+}

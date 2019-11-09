@@ -9,3 +9,5 @@
 
 # misc
 .DS_Store
+
+api/configs/mysql_config.js

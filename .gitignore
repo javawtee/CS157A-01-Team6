@@ -5,3 +5,5 @@ uikit/
 package-lock.json
 package-lock.json
 package-lock.json
+.vscode/settings.json
+client/src/Test/DevTest.js

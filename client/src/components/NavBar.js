@@ -5,20 +5,10 @@ class NavBar extends Component {
     render() {
         return (
             <React.Fragment>
-                <nav className="uk-navbar-container uk-margin" uk-navbar="">
-                    <div className="uk-navbar-left">
-                        <ul className="uk-navbar-nav">
-                            {/*<button className="uk-button uk-button-default"><a style={{ color: "red" }} href="ert#">
-                                <span className="uk-icon uk-margin-small-right" uk-icon="icon: home">
-                            </span>Home</a></button>*/}
-                            <button className="uk-button uk-button-default">
-                                <span className="uk-icon uk-margin-small-right" uk-icon="icon: world" />
-                                Booking</button>
-                        </ul>
-                        <div className="uk-navbar-right">
+                <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+                    <nav className="uk-navbar-container" uk-navbar="">
+                        <div className="uk-navbar-left">
                             <ul className="uk-navbar-nav">
-                                <button className={this.props.home ? "uk-active" : ""}><span className="uk-icon uk-margin-small-right" uk-icon="icon: world" />
-                                <a href="/dashboard">HOME</a></button>
                                 <li className={this.props.profile ? "uk-active" : ""}><a href="/profile">
                                     User Profile
                             </a></li>
@@ -30,8 +20,11 @@ class NavBar extends Component {
                             </a></li>
                             </ul>
                         </div>
-                    </div>
-                </nav>
+                    </nav>
+                </div>
+                <div style={{ backgroundColor: "#006994" }} uk-height-viewport="offset-top: true">
+                    {this.props.content}
+                </div>
             </React.Fragment>
         )
     }
