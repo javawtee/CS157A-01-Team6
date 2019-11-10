@@ -6,7 +6,7 @@ export function generateOptions(className, onChange, defaultValue, listOfOptions
     ])
 }
 
-export function generateComponents(listOfData, ParentComponent) {
+export function generateComponents(listOfData, ParentComponent, options) {
     return listOfData.map((data, id) =>
-        React.createElement(ParentComponent, { key: id, data }, null))
+        React.createElement(ParentComponent, { key: id, id, data, ...options }, null))
 }

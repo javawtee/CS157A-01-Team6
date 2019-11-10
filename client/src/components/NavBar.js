@@ -25,7 +25,7 @@ class NavBar extends Component {
                         </div>
                     </nav>
                 </div>
-                <div style={{ backgroundColor: "#006994" }} uk-height-viewport="offset-top: true">
+                <div style={{ backgroundColor: "darkgrey" }} uk-height-viewport="offset-top: true">
                     {this.props.content}
                 </div>
             </React.Fragment>

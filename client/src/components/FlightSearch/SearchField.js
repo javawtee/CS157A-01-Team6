@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { isAfter } from 'date-fns'
-import countries from '../../Test/airports';
+import { useDispatch } from 'react-redux';
+import { isAfter } from 'date-fns';
+import countries from '../../Test/countries';
 import Autocomplete from '../Autocomplete';
 
-import { generateOptions } from 'utils/generators'
-import flightTimeOptions from 'models/flightTimeOptions'
-import flightClassOptions from 'models/flightClassOptions'
-import sortByOptions from 'models/sortByOptions'
+import { generateOptions } from 'utils/generators';
+import flightTimeOptions from 'models/flightTimeOptions';
+import flightClassOptions from 'models/flightClassOptions';
+import sortByOptions from 'models/sortByOptions';
 
 export default function SearchField(props) {
+  const dispatch = useDispatch()
+
   const { MAX_PRICE, DEPART_TIME, ARRIVE_TIME, FLIGHT_CLASS, SORT_BY } = props
   const DEFAULT_MAX_PRICE = MAX_PRICE || 2000
   const DEFAULT_DEPART_TIME = DEPART_TIME || flightTimeOptions[0]
@@ -27,14 +30,12 @@ export default function SearchField(props) {
   const [maxPrice, setMaxPrice] = useState(+DEFAULT_MAX_PRICE)
   const [sortByInput, setSortByInput] = useState(DEFAULT_SORT_BY)
 
-
-
   useEffect(() => {
     // minDate of ToDate-DatePicker can't be before selected fromDate
     if (isAfter(dateInputs.fromDate, dateInputs.toDate)) {
       setDateInputs({ ...dateInputs, toDate: dateInputs.fromDate })
     }
-  })
+  }, [dateInputs])
 
   const handleTripType = e => setTripType({ roundtrip: (e.target.id !== '') })
 
@@ -52,9 +53,17 @@ export default function SearchField(props) {
 
   const handleSelectSortByOption = e => setSortByInput(e.target.value)
 
+  const handleOnChangeAutoComplete = e => setSearchInputs({ ...searchInputs, [e.target.name]: e.target.value })
+
   const handleSubmit = e => {
     e.preventDefault()
-    console.log(searchInputs)
+    dispatch({
+      type: "BOOKING_APPLY_SEARCH",
+      payload: {
+        isRoundTrip: tripType.roundtrip,
+        searchInputs, dateInputs, flightTimeInputs, numOfPassengers, flightClassInput, maxPrice, sortByInput
+      }
+    })
   }
 
   return (
@@ -85,7 +94,13 @@ export default function SearchField(props) {
       <div className='uk-width-1-1@s' uk-grid=''>
         <div className='uk-width-1-2@s'>
           <small>Flight From</small>
-          <Autocomplete className='uk-input uk-form-small' data={countries} value={searchInputs.flightFrom} />
+          <Autocomplete
+            className='uk-input uk-form-small'
+            name="flightFrom"
+            data={countries}
+            value={searchInputs.flightFrom}
+            onChange={handleOnChangeAutoComplete}
+          />
           {/* <input className='uk-input' type='text' name='flightFrom' value={searchInputs.flightFrom} onChange={handleInputChange} /> */}
         </div>
         <div className='uk-width-1-3 uk-width-1-5@s'>
@@ -102,7 +117,13 @@ export default function SearchField(props) {
       <div className='uk-width-1-1@s' uk-grid=''>
         <div className='uk-width-1-2@s'>
           <small>Flight To</small>
-          <Autocomplete className='uk-input uk-form-small' data={countries} value={searchInputs.flightTo} />
+          <Autocomplete
+            className='uk-input uk-form-small'
+            name="flightTo"
+            data={countries}
+            value={searchInputs.flightTo}
+            onChange={handleOnChangeAutoComplete}
+          />
         </div>
         <div className='uk-width-1-3 uk-width-1-5@s'>
           <small>Arrive Date</small>
@@ -135,7 +156,7 @@ export default function SearchField(props) {
         </li>
       </ul>
       <div className='uk-width-1-1@s uk-card-footer uk-flex uk-flex-right'>
-        <button className='uk-button uk-button-primary'>Apply</button>
+        <button className='uk-button uk-button-primary' type="submit">Apply</button>
       </div>
     </form>
   );

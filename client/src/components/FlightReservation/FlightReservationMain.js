@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import getPassengerForm from 'models/passenger'
 import ResvPassenger from './ResvPassenger'
-import FlightSummary from '../FlightSummary'
 
 export class FlightReservationMain extends Component {
     constructor(props) {
@@ -55,22 +54,14 @@ export class FlightReservationMain extends Component {
         return (
             <div className="uk-margin-auto@s uk-width-1-1" uk-grid="">
                 <div className="uk-width-1-1" uk-grid="">
-                    <div className="uk-width-1-1">
-                        <FlightSummary
-                            TYPE="Depart"
-                            DEPART_FROM={"San Jose"}
-                            ARRIVE_TO={"Las Vegas"}
-                            SELECTED_DATE={new Date()}
-                            FLIGHT_TIME={new Date()}
-                        />
-                        <FlightSummary
-                            TYPE="Return"
-                            DEPART_FROM={"Las Vegas"}
-                            ARRIVE_TO={"San Jose"}
-                            SELECTED_DATE={new Date()}
-                            FLIGHT_TIME={new Date()}
-                        />
-                    </div>
+                    <ul className="uk-width-1-1" uk-accordion="" style={{ background: "white" }}>
+                        <li>
+                            <a className="uk-accordion-title" href="#flight-summary">Flight Summary</a>
+                            <div className="uk-accordion-content">
+                                {this.props.children}
+                            </div>
+                        </li>
+                    </ul>
                     <div className="uk-width-1-1 uk-padding-remove">
                         <button className="uk-button uk-button-primary"
                             onClick={this.handleAddNewPassengerForm}>
