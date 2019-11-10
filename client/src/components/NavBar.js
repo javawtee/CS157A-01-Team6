@@ -9,9 +9,6 @@ class NavBar extends Component {
                     <nav className="uk-navbar-container" uk-navbar="">
                         <div className="uk-navbar-left">
                             <ul className="uk-navbar-nav">
-                                <li className={this.props.home ? "uk-active" : ""}><a href="/dashboard">
-                                    HOME
-                            </a></li>
                                 <li className={this.props.profile ? "uk-active" : ""}><a href="/profile">
                                     User Profile
                             </a></li>
