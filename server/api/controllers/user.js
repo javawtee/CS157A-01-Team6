@@ -1,6 +1,7 @@
 const conn = require('../connector')
+const uuidv5 = require('uuid/v5')
 
-exports.getList = (req, res, next) => {
+exports.getList = function (req, res, next) {
     conn.query('SELECT * FROM test_login', (err, rows) => {
         if (err) res.status(500).send('Oops! Something went wrong with connection')
         else {
@@ -16,18 +17,44 @@ exports.getList = (req, res, next) => {
     })
 }
 
-exports.signedIn = (req, res, next) => {
-    if(req.session.user){
+exports.signedIn = function (req, res, next) {
+    if (req.session.user) {
+        console.log(req.session.user)
         res.jsonp(req.session.user)
     }
     res.jsonp(undefined)
 }
 
-exports.signIn = (req, res, next) => {
-    if (req.body.userId && req.body.password) {
-        conn.query('select count(id) as C, id, user_name as name from test_login where user_id=? and password=sha2(?,0);',
-            [req.body.userId, req.body.password], (err, result) => {
-                if (err) res.status(500).send(err)
+exports.signUp = function (req, res, next) {
+    var { firstName, lastName, middleInitial, signupEmail, signupPassword } = req.body
+    // var activate_link = uuidv5(signupEmail, '1b671a64-40d5-491e-99b0-da01ff1f3341')
+    if (firstName && lastName && middleInitial && signupEmail && signupPassword) {
+        conn.query(`insert into user (user_id, email, password, first_name, last_name, middle_initial) 
+                values (sha1(?), ?, sha2(?, 0), ?, ?, ?);`, [signupEmail, signupEmail, signupPassword, firstName, lastName, middleInitial],
+            (err, result) => {
+                if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        res.jsonp('duplicate')
+                    } else {
+                        res.status(500).jsonp(err)
+                    }
+                } else if (result && result.affectedRows > 0) {
+                    res.jsonp('success')
+                } else {
+                    res.status(500).jsonp('Bad server response')
+                }
+            })
+    } else {
+        res.status(403).jsonp("Bad request")
+    }
+}
+
+exports.signIn = function (req, res, next) {
+    if (req.body.email && req.body.password) {
+        conn.query(`select count(user_id) as C, user_id, first_name, last_name, middle_initial, joined_datetime from user 
+                    where email=? and password=sha2(?,0);`, [req.body.email, req.body.password],
+            (err, result) => {
+                if (err) res.status(500).jsonp(err)
                 if (result === undefined || result[0].C === 0)
                     res.jsonp(undefined)
                 else {
@@ -42,9 +69,9 @@ exports.signIn = (req, res, next) => {
     }
 }
 
-exports.signOut = (req, res, next) => {
+exports.signOut = function (req, res, next) {
     req.session.destroy(err => {
-        if(err) res.status(500).json(err)
+        if (err) res.status(500).json(err)
         res.clearCookie(process.env.SESS_NAME)
         res.jsonp(undefined)
     })
