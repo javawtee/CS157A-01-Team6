@@ -1,8 +1,15 @@
-const sessionName = 'flt'
+const sessionName = 'tkt'
 
 const initial = {
-    departFlight: null,
-    returnFlight: null,
+    ticket: {
+        departFlight: null,
+        returnFlight: null,
+    }
+}
+
+const createSession = () => {
+    var session = getSession()
+    if (!session) setSession(initial)
 }
 
 const setSession = session => {
@@ -14,11 +21,8 @@ const getSession = () => {
 }
 
 const searchSession = {
-    createSession: () => {
-        var session = getSession()
-        if (!session) setSession(initial)
-    },
     getAll: () => {
+        createSession()
         return getSession()
     },
     get: key => {
@@ -28,14 +32,14 @@ const searchSession = {
     set: (key, value) => {
         var session = getSession()
         if (session) {
-            session[key] = value
+            session.ticket[key] = value
             return setSession(session)
         }
     },
     validForReservation: isRoundTrip => {
         var session = getSession()
         if (session) {
-            const { departFlight, returnFlight } = session
+            const { departFlight, returnFlight } = session.ticket
             return (isRoundTrip && departFlight !== null && returnFlight !== null) || (!isRoundTrip && departFlight !== null)
         }
         return false

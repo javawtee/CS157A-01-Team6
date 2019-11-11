@@ -35,6 +35,7 @@ const getSession = () => {
 
 const searchSession = {
     getAll: () => {
+        createSession()
         return getSession()
     },
     get: key => {

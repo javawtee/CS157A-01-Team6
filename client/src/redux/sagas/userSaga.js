@@ -30,8 +30,10 @@ function* SIGN_IN({ payload }) {
 
 function* SIGN_OUT() {
     try {
-        let ret = yield call(services.signOut)
-        console.log(ret)
+        yield call(services.signOut)
+        // clean up or logic after sign out
+        sessionStorage.clear()
+        // update state for DOM
         yield put({ type: types.SET_UNAUTHENTICATED })
     } catch (e) {
         UIkit.notification(e.message, { status: 'danger', timeout: 2000 })

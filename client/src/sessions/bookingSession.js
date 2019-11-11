@@ -1,7 +1,12 @@
 const sessionName = 'bk'
 
 const initial = {
-    current: 0
+    current: 0 // current component: Search -> Result -> Reservation
+}
+
+const createSession = () => {
+    var session = getSession()
+    if (!session) setSession(initial)
 }
 
 const setSession = session => {
@@ -26,11 +31,8 @@ const set = (key, value) => {
 }
 
 const bookingSession = {
-    createSession: () => {
-        var session = getSession()
-        if (!session) setSession(initial)
-    },
     getAll: () => {
+        createSession()
         return getSession()
     },
     get: key => {

@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import P404 from 'pages/P404';
 import SearchField from 'components/FlightSearch/SearchField';
 import FlightSearchResults from 'components/FlightSearch/FlightSearchResults';
 import FlightReservationMain from 'components/FlightReservation/FlightReservationMain'
 import FlightSummary from 'components/FlightSummary'
 
-export class Booking extends Component {
-    componentDidMount = () => this.props.initLoad()
+class Booking extends Component {
     getView = () => {
         var { currentStep, isRoundTrip,
             validForReservation, toReservation,
@@ -58,7 +56,7 @@ export class Booking extends Component {
                     </FlightReservationMain>
                 )
             default:
-                return <P404 />
+                return <React.Fragment></React.Fragment>
         }
     }
 
@@ -72,6 +70,7 @@ export class Booking extends Component {
 }
 
 const mapStateToProps = state => ({
+    loaded: state.booking.loaded,
     currentStep: state.booking.current,
     isRoundTrip: state.booking.isRoundTrip,
     validForReservation: state.booking.validForReservation,
