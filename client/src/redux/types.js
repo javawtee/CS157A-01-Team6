@@ -9,6 +9,7 @@ const types = {
     SET_UNAUTHENTICATED: "SET_UNAUTHENTICATED",
 
     // User
+    SIGN_UP: "SIGN_UP",
     SIGN_IN: "SIGN_IN",
     SET_USER: "SET_USER",
     SIGN_OUT: "SIGN_OUT",
