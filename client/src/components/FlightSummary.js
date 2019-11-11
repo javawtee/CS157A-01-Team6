@@ -16,7 +16,7 @@ export default function FlightSummary(props) {
             <div className="uk-width-1-1 uk-text-large uk-text-bold uk-padding-remove">
                 {TYPE} Flight
             </div>
-            <div className="uk-width-1-4@s uk-padding-remove">
+            <div className="uk-width-1-3@s uk-padding-remove">
                 <span className="uk-width-1-1 uk-text-bold uk-padding-remove">
                     {DEPART_FROM} <span uk-icon="icon: arrow-right"></span> {ARRIVE_TO}
                 </span>

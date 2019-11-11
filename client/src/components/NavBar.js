@@ -1,37 +1,27 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { generateNavItems } from 'utils/generators'
+import routes from 'models/routes'
 
-class NavBar extends Component {
-    render() {
-        return (
-            <React.Fragment>
-                <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
-                    <nav className="uk-navbar-container" uk-navbar="">
-                        <div className="uk-navbar-left">
-                            <ul className="uk-navbar-nav">
-                                <li className={this.props.profile ? "uk-active" : ""}><a href="/profile">
-                                    User Profile
+export default function NavBar(props) {
+    const dispatch = useDispatch()
+    return (
+        <React.Fragment>
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+                <nav className="uk-navbar-container" uk-navbar="">
+                    <div className="uk-navbar-left">
+                        <ul className="uk-navbar-nav">
+                            {generateNavItems(routes, props.currentViewPath)}
+                            <li><a href="#sign-out" onClick={e => { e.preventDefault(); dispatch({ type: "SIGN_OUT" }) }}>
+                                Sign Out
                             </a></li>
-                                <li className={this.props.booking ? "uk-active" : ""}><a href="/booking">
-                                    Booking Flight
-                            </a></li>
-                                <li><a href="#sign-out" onClick={e => { e.preventDefault(); this.props.signOut() }}>
-                                    Sign Out
-                            </a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-                <div style={{ backgroundColor: "darkgrey" }} uk-height-viewport="offset-top: true">
-                    {this.props.content}
-                </div>
-            </React.Fragment>
-        )
-    }
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div style={{ backgroundColor: "darkgrey" }} uk-height-viewport="offset-top: true">
+                {props.content || props.children}
+            </div>
+        </React.Fragment>
+    )
 }
-
-const mapDispatchToProps = dispatch => ({
-    signOut: () => dispatch({ type: "SIGN_OUT" })
-})
-
-export default connect(null, mapDispatchToProps)(NavBar)
