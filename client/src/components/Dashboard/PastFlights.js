@@ -23,8 +23,7 @@ let flights = [{
 class PastFlight extends Component {
 
     createTable = () => {
-        // let table = []
-        console.log(Object.keys(flights[0]))
+        
         return (
             flights.map((flight, id) => <tr key={id}>
                 {Object.keys(flight).map((key, id2) => <td key={id2}>{flight[key]}</td>)}
