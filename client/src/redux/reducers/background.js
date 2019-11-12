@@ -1,7 +1,7 @@
 import types from "../types"
 
 const initialState = {
-    authenticated: false,
+    authenticated: null,
     loading: false,
 }
 
@@ -11,7 +11,7 @@ export default function appReducer(state = initialState, action) {
             return { ...state, authenticated: true }
         case types.SET_UNAUTHENTICATED:
             return { ...state, authenticated: false }
-        default: 
+        default:
             return state
     }
 }

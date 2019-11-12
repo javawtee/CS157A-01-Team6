@@ -1,65 +1,26 @@
-import React, { Component } from "react";
+import React from "react";
+import { useSelector } from 'react-redux'
 import "stylesheets/App.css";
-import { Redirect, Switch, Route } from "react-router-dom";
-import { connect } from "react-redux";
+import { Switch, Route } from "react-router-dom";
+import { generateRoutes } from 'utils/generators'
+import routes from "models/routes";
 import DevTest from "Test/DevTest";
-import NavBar from "components/NavBar";
-import Dashboard from "pages/Dashboard";
-import Booking from "pages/Booking";
-import Welcome from "pages/Welcome";
-import P404 from "pages/P404";
 
-class App extends Component {
-  componentDidMount = () => {
-    this.props.checkAuthentication();
-  };
 
-  AuthenticatedRoute = ({ component: Component, path, ...rest }) => {
-    return (
-      <Route {...rest} render={props =>
-        this.props.authenticated ? <Component {...props} /> : <Redirect to={path} />} />
-    )
-  };
+export default function App(props) {
+  const { authenticated } = useSelector(state => ({ authenticated: state.background.authenticated }))
 
-  render() {
-    return (
-      <div className="App">
+  return (
+    <div className="App">
+      {
+        authenticated !== null &&
         <Switch>
           {/* this route (path="") is used for testing purpose only, will be remove in final release */}
           <Route exact path="/devtest" component={DevTest} />
-          <Route
-            exact path="/" render={() =>
-              this.props.authenticated ? <Redirect to="/dashboard" /> : <Welcome />
-            }
-          />
-          <this.AuthenticatedRoute
-            exact path="/dashboard"
-            component={() => <NavBar home={true} content={<Dashboard />} />}
-          />
-          <this.AuthenticatedRoute
-            exact path="/profile"
-            component={() => <NavBar profile={true} content={<p>Profile</p>} />}
-          />
-          <this.AuthenticatedRoute
-            exact path="/booking"
-            component={() => <NavBar booking={true} content={<Booking />} />}
-          />
-          <Route exact path="*" render={() => <P404 />} />
+          {generateRoutes(routes, { authenticated, defaultAuthenticatedPath: "/dashboard" })}
         </Switch>
-      </div>
-    );
-  }
+      }
+    </div>
+  );
+
 }
-
-const mapStateToProps = state => ({
-  authenticated: state.background.authenticated
-});
-
-const mapDispatchToProps = dispatch => ({
-  checkAuthentication: () => dispatch({ type: "SIGNED_IN" })
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);

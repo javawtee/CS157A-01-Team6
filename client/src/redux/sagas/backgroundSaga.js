@@ -2,17 +2,17 @@ import { all, takeEvery, call, put } from 'redux-saga/effects'
 import types from '../types'
 import services from '../../apis/services'
 
-function* SIGNEDIN() {
+function* SIGNED_IN() {
     let ret = yield call(services.signedIn)
-    if(ret.data !== ""){
-        yield put({type: types.SET_AUTHENTICATED })
+    if (ret.data !== "") {
+        yield put({ type: types.SET_AUTHENTICATED })
     } else {
-        yield put({type: types.SET_UNAUTHENTICATED })
+        yield put({ type: types.SET_UNAUTHENTICATED })
     }
 }
 
 export default function* backgroundSaga() {
     yield all([
-        takeEvery(types.SIGNED_IN, SIGNEDIN),
+        SIGNED_IN()
     ])
 }

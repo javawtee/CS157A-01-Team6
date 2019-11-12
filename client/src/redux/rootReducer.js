@@ -1,7 +1,8 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
 import background from './reducers/background'
 import user from './reducers/user'
+import booking from './reducers/booking'
 
 // component reducers
 
@@ -10,4 +11,5 @@ import user from './reducers/user'
 export default combineReducers({
     background,
     user,
+    booking
 });

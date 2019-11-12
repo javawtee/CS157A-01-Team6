@@ -8,7 +8,8 @@ const services = {
 
 
     // user
-    signIn: coin => { return axios.post(urls.user.signin, { userId: coin.userId, password: coin.password }) },
+    signUp: payload => { return axios.post(urls.user.signup, payload) },
+    signIn: payload => { return axios.post(urls.user.signin, payload) },
     signOut: () => { return axios.get(urls.user.signout) }
 }
 
