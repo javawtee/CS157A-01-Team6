@@ -8,6 +8,7 @@ import Dashboard from "pages/Dashboard";
 import Booking from "pages/Booking";
 import Welcome from "pages/Welcome";
 import P404 from "pages/P404";
+import Profile from "pages/Profile"
 
 class App extends Component {
   componentDidMount = () => {
@@ -38,7 +39,7 @@ class App extends Component {
           />
           <this.AuthenticatedRoute
             exact path="/profile"
-            component={() => <NavBar profile={true} content={<p>Profile</p>} />}
+            component={() => <NavBar home={true} content={<Profile />} />}
           />
           <this.AuthenticatedRoute
             exact path="/booking"

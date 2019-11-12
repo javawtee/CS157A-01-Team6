@@ -12,7 +12,7 @@ class NavBar extends Component {
                             <li className={this.props.profile ? "uk-active" : ""}><a href="/dashBoard">
                                     Home
                             </a></li>
-                                <li className={this.props.profile ? "uk-active" : ""}><a href="/userprofile">
+                                <li className={this.props.profile ? "uk-active" : ""}><a href="/profile">
                                     User Profile
                             </a></li>
                                 <li className={this.props.booking ? "uk-active" : ""}><a href="/booking">
