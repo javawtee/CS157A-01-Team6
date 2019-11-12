@@ -16,15 +16,18 @@ export default function ResvPassenger(props) {
                         uk-card uk-card-default"
             key={id}
             uk-grid="">
-            <div className="uk-width-1-1 uk-flex uk-flex-right uk-padding-remove">
-                <button className="uk-button"
-                    uk-icon="icon: close; ratio: 2"
-                    uk-tooltip="Remove passenger"
-                    onClick={id => onRemove(id)}
-                >
-                </button>
+            <div className="uk-width-1-1 uk-flex uk-flex-wrap uk-flex-wrap-around uk-padding-remove uk-margin-remove-bottom">
+                <span className="uk-width-1-2"><h4>Passenger {id + 1}</h4></span>
+                <span className="uk-width-1-2 uk-flex uk-flex-right">
+                    <button className="uk-button"
+                        uk-icon="icon: close; ratio: 1"
+                        uk-tooltip="Remove passenger"
+                        onClick={id => onRemove(id)}
+                    >
+                    </button>
+                </span>
             </div>
-            <div className="uk-width-1-1 uk-padding-remove" uk-grid="">
+            <div className="uk-width-1-1 uk-padding-remove uk-margin-remove" uk-grid="">
                 <div className="uk-width-1-3@s">
                     <small>First Name</small>
                     <input className="uk-input uk-form-small" id={id} name="firstName" value={form.firstName}
@@ -35,14 +38,14 @@ export default function ResvPassenger(props) {
                     <input className="uk-input uk-form-small" id={id} name="lastName" value={form.lastName}
                         onChange={onChange} />
                 </div>
-                <div className="uk-width-1-3 uk-width-1-6@s">
+                <div className="uk-width-1-3 uk-width-1-6@s uk-margin-remove">
                     <small>Middle Initial</small>
                     <input className="uk-input uk-form-small" maxLength={1}
                         id={id} name="middleInitial" value={form.middleInitial}
                         onChange={onChange} />
                 </div>
             </div>
-            <div className="uk-width-1-1 uk-padding-remove" uk-grid="">
+            <div className="uk-width-1-1 uk-padding-remove uk-margin-remove" uk-grid="">
                 <div className="uk-width-1-6@s">
                     <small>ID Type</small>
                     {generateOptions('uk-select uk-form-small', onChange, form.IDType, IDTypeOptions, {id, name: "IDType"})}
@@ -53,7 +56,7 @@ export default function ResvPassenger(props) {
                         onChange={onChange} autoComplete="off"/>
                 </div>
             </div>
-            <div className="uk-width-1-1 uk-padding-remove" uk-grid="">
+            <div className="uk-width-1-1 uk-padding-remove uk-margin-remove" uk-grid="">
                 <div className="uk-width-1-3@s">
                     <small>Email (optional)</small>
                     <input className="uk-input uk-form-small" id={id} name="email" value={form.email}

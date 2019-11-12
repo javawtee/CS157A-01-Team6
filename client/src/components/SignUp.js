@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import UIkit from "uikit"
 import { validateEmailFormat, validateStrongPassword } from 'utils/validators'
 
@@ -17,6 +18,7 @@ const initialState = {
     validconfirmEmail: true,
     validsignupPassword: true,
     validconfirmPassword: true,
+    duplicateEmail: false,
 }
 
 export class SignUp extends Component {
@@ -27,28 +29,46 @@ export class SignUp extends Component {
 
     handleChange = e => {
         let removedWarnFrom = `valid${e.target.id}`
-        this.setState({ [e.target.name]: e.target.value, [removedWarnFrom]: true })
+        let duplicateEmail = e.target.name === 'signupEmail' ? false : this.state.duplicateEmail
+        this.setState({ [e.target.name]: e.target.value, [removedWarnFrom]: true, duplicateEmail })
+    }
+
+    handleOnFocusPassword = e => {
+        this.setState({ signupPassword: '', confirmPassword: '', validsignupPassword: true, validconfirmPassword: true })
     }
 
     handleSubmit = e => {
         e.preventDefault()
-        let validfirstName = this.state.firstName.length > 1
-        let validlastName = this.state.lastName.length > 1
-        let validmiddleInitial = this.state.middleInitial.length === 0 || (this.state.middleInitial.length > 0 && isNaN(this.state.middleInitial))
-        let validsignupEmail = this.state.signupEmail.length > 0 && validateEmailFormat(this.state.signupEmail)
-        let validconfirmEmail = this.state.confirmEmail.length > 0 && this.state.confirmEmail === this.state.signupEmail
-        let validsignupPassword = this.state.signupPassword.length > 5 && validateStrongPassword(this.state.signupPassword)
-        let validconfirmPassword = this.state.confirmPassword.length > 5 && this.state.confirmPassword === this.state.signupPassword
+        let { firstName, lastName, middleInitial, signupEmail, confirmEmail, signupPassword, confirmPassword } = this.state
+        let validfirstName = firstName.length > 1
+        let validlastName = lastName.length > 1
+        let validmiddleInitial = middleInitial.length === 0 || (middleInitial.length > 0 && isNaN(middleInitial))
+        let validsignupEmail = signupEmail.length > 0 && validateEmailFormat(signupEmail)
+        let validconfirmEmail = confirmEmail.length > 0 && confirmEmail === signupEmail
+        let validsignupPassword = signupPassword.length > 5 && validateStrongPassword(signupPassword)
+        let validconfirmPassword = confirmPassword.length > 5 && confirmPassword === signupPassword
         if (!validfirstName || !validlastName || !validmiddleInitial || !validsignupEmail || !validconfirmEmail || !validsignupPassword || !validconfirmPassword) {
-            return this.setState({ 
-                validfirstName, validlastName, validmiddleInitial, 
-                validsignupEmail, validconfirmEmail, validsignupPassword, 
-                validconfirmPassword 
+            return this.setState({
+                validfirstName, validlastName, validmiddleInitial,
+                validsignupEmail, validconfirmEmail, validsignupPassword,
+                validconfirmPassword
             })
         }
 
         // TODO: call API
-        alert("blabla")
+        this.props.sendSignUpForm({ firstName, lastName, middleInitial, signupEmail, signupPassword }, response => {
+            console.log(response)
+            switch (response) {
+                case 'success':
+                    UIkit.modal('#signUp').hide()
+                    return UIkit.notification("Successfully signed up an account", { status: 'success', timeout: 2000 })
+                case 'duplicate':
+                    return this.setState({ duplicateEmail: true, confirmEmail: '' })
+                default:
+                    return
+
+            }
+        })
     }
 
     render() {
@@ -85,9 +105,13 @@ export class SignUp extends Component {
                             </div>
                             <div className="uk-width-1-1">
                                 <label className="uk-form-label uk-text-bold" htmlFor="form-stacked-text">Email</label>
-                                <input id="signupEmail" className={`uk-input ${this.state.validsignupEmail ? '' : 'uk-form-danger'}`} type="text" placeholder="john.doe@domain.com"
+                                <input id="signupEmail"
+                                    className={`uk-input ${this.state.validsignupEmail ? '' : 'uk-form-danger'}
+                                                         ${this.state.duplicateEmail === false ? '' : 'uk-form-danger'}`}
+                                    type="text" placeholder="john.doe@domain.com"
                                     name="signupEmail" onChange={this.handleChange} value={this.state.signupEmail} />
                                 <small style={{ color: "red", display: this.state.validsignupEmail ? "none" : "" }}>Email is not valid</small>
+                                <small style={{ color: "red", display: !this.state.duplicateEmail ? "none" : "" }}>Email is already taken</small>
                             </div>
                             <div className="uk-width-1-1">
                                 <label className="uk-form-label uk-text-bold" htmlFor="form-stacked-text">Confirm Email</label>
@@ -98,12 +122,13 @@ export class SignUp extends Component {
                             <div className="uk-width-1-1">
                                 <label className="uk-form-label uk-text-bold" htmlFor="form-stacked-text">Password</label>
                                 <input id="signupPassword" className={`uk-input ${this.state.validsignupPassword ? '' : 'uk-form-danger'}`} type="password" placeholder="Password"
-                                    name="signupPassword" onChange={this.handleChange} value={this.state.signupPassword} />
+                                    name="signupPassword" onChange={this.handleChange} value={this.state.signupPassword}
+                                    onFocus={this.handleOnFocusPassword} />
                                 <small style={{ color: "red", display: this.state.validsignupPassword ? "none" : "" }}>Password is too simple</small>
-                                <p style={{marginTop: '1px'}}>
-                                    <small>* Password must have at least 6 characters</small><br/>
-                                    <small>* Password must contain a letter or a number</small><br/>
-                                    <small>* Password must contain a special character (!@#$%^&*)</small><br/>
+                                <p style={{ marginTop: '1px' }}>
+                                    <small>* Password must have at least 6 characters</small><br />
+                                    <small>* Password should contain at least a letter or a number</small><br />
+                                    <small>* Password should contain a special character (!@#$%^&*)</small><br />
                                 </p>
                             </div>
                             <div className="uk-width-1-1">
@@ -124,4 +149,8 @@ export class SignUp extends Component {
     }
 }
 
-export default SignUp
+const mapDispatchToProps = dispatch => ({
+    sendSignUpForm: (payload, callback) => dispatch({ type: "SIGN_UP", payload, callback })
+})
+
+export default connect(null, mapDispatchToProps)(SignUp);

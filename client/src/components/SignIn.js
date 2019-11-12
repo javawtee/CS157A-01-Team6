@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 const initialState = {
     userid: "",
@@ -15,7 +15,7 @@ export class SignIn extends Component {
     }
 
     handleOnFocus = e => {
-        if(e.target.id === "password") this.setState({password: ""})
+        if (e.target.id === "password") this.setState({ password: "" })
     }
 
     handleChange = e => {
@@ -30,7 +30,7 @@ export class SignIn extends Component {
         let validuserid = this.state.userid.length > 0
         let validpassword = this.state.password.length > 0
         if (!validuserid || !validpassword) {
-            return this.setState({validuserid, validpassword})
+            return this.setState({ validuserid, validpassword })
         }
 
         this.props.signin(this.state.userid, this.state.password)
@@ -50,8 +50,8 @@ export class SignIn extends Component {
                     <div className="uk-margin uk-child-width-1-1">
                         <div className="uk-inline uk-form-password">
                             <span className="uk-form-icon" uk-icon="icon: lock"></span>
-                            <input id="password" className={`uk-input ${this.state.validpassword ? "" : "uk-form-danger"}`} 
-                                type="password" onFocus={this.handleOnFocus} onChange={this.handleChange} 
+                            <input id="password" className={`uk-input ${this.state.validpassword ? "" : "uk-form-danger"}`}
+                                type="password" onFocus={this.handleOnFocus} onChange={this.handleChange}
                                 name="password" value={this.state.password} placeholder="Password" />
                         </div>
                     </div>
@@ -80,12 +80,12 @@ export class SignIn extends Component {
     }
 }
 
-const mapStateToProps = state => ({ 
+const mapStateToProps = state => ({
     authenticated: state.background.authenticated
- })
+})
 
 const mapDispatchToProps = dispatch => ({
-    signin: (userId, password) => dispatch({ type: "SIGN_IN", coin: {userId, password}})
+    signin: (email, password) => dispatch({ type: "SIGN_IN", payload: { email, password } })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

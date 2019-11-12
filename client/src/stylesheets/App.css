@@ -30,3 +30,11 @@
 .uk-grid>* {
   padding:10px;
 }
+
+.uk-select, .uk-textarea {
+  border: 1px solid grey;
+}
+
+.uk-modal {
+  padding: 0
+}

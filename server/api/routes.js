@@ -10,6 +10,7 @@ router.get('/', (req, res, next) => {
 // user
 router.get('/user/list', User.getList)
 router.get('/user/signedin', User.signedIn)
+router.post('/user/signup', User.signUp)
 router.post('/user/signin', User.signIn)
 router.get('/user/signout', User.signOut)
 

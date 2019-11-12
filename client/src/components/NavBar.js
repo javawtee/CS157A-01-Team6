@@ -1,16 +1,19 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { generateNavItems } from 'utils/generators'
+import routes from 'models/routes'
 
-class NavBar extends Component {
-    render() {
-        return (
-            <React.Fragment>
-                <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
-                    <nav className="uk-navbar-container" uk-navbar="">
-                        <div className="uk-navbar-left">
-                            <ul className="uk-navbar-nav">
-                            <li className={this.props.profile ? "uk-active" : ""}><a href="/dashBoard">
-                                    Home
+export default function NavBar(props) {
+    const dispatch = useDispatch()
+    return (
+        <React.Fragment>
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+                <nav className="uk-navbar-container" uk-navbar="">
+                    <div className="uk-navbar-left">
+                        <ul className="uk-navbar-nav">
+                            {generateNavItems(routes, props.currentViewPath)}
+                            <li><a href="#sign-out" onClick={e => { e.preventDefault(); dispatch({ type: "SIGN_OUT" }) }}>
+                                Sign Out
                             </a></li>
                                 <li className={this.props.profile ? "uk-active" : ""}><a href="/profile">
                                     User Profile
@@ -30,9 +33,3 @@ class NavBar extends Component {
         )
     }
 }
-
-const mapDispatchToProps = dispatch => ({
-    signOut: () => dispatch({ type: "SIGN_OUT" })
-})
-
-export default connect(null, mapDispatchToProps)(NavBar)

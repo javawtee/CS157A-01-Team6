@@ -1,6 +1,5 @@
 import React from 'react';
-import { format, parse, differenceInHours } from 'date-fns'
-
+import { getTimeIn12HourFormat, calcDuration } from 'utils/datetime'
 // props:
 // data - required
 // data.depTime (DepartTime) - required
@@ -8,30 +7,11 @@ import { format, parse, differenceInHours } from 'date-fns'
 // data.economy - required
 // data.business - required
 
-const getTimeIn12HourFormat = timeString => {
-    const time = parse(timeString, "HH:mm", new Date())
-    return (
-        <React.Fragment>
-            <span className="uk-text-large uk-text-bold uk-margin-small-right">{format(time, "hh:mm")}</span>
-            <small>{format(time, "a")}</small>
-        </React.Fragment>
-    )
-}
-
-const calcDuration = (depTimeString, arrTimeString) => {
-    const arrTime = parse(arrTimeString, "HH:mm", new Date())
-    const depTime = parse(depTimeString, "HH:mm", new Date())
-    const diffHours = differenceInHours(arrTime, depTime)
-    var diffMinutes = arrTime.getMinutes() - depTime.getMinutes()
-    diffMinutes = diffMinutes < 0 ? -diffMinutes : diffMinutes
-    //return `${diffHours} hour${diffHours > 1 ? "s" : ""} ${diffMinutes > 0 ? `and ${diffMinutes} minute${diffMinutes > 1 ? "s" : ""}` : ""} `
-    return `${diffHours}h ${diffMinutes}m`
-}
-
 export default function ResultItem(props) {
-    const { depTime, arrTime, economy, business } = props.data//.reduce((prev, curr) => prev.depTime < curr.arrTime)
-    const economyAvailability = economy.seats < 1
-    const businessAvailability = business.seats < 1
+    const { id, selected, type, handleSelectFlight, handleChangeFlight } = props
+    const { depTime, arrTime, economy, business } = props.data
+    const economyAvailability = economy && economy.seats < 1
+    const businessAvailability = business && business.seats < 1
 
     return (
         <div className="uk-margin-auto@s uk-margin-remove-top uk-margin-remove-bottom uk-width-1-1 uk-padding-small uk-card uk-card-default uk-card-hover" uk-grid="">
@@ -45,54 +25,97 @@ export default function ResultItem(props) {
                     <small>Duration: {calcDuration(depTime, arrTime)}</small>
                 </div>
             </div>
-            <div className="uk-width-1-1 uk-width-1-3@m uk-padding uk-padding-remove-top uk-padding-remove-bottom">
-                <button className="uk-button uk-button-default uk-margin-small-right uk-margin-small-bottom"
-                    disabled={economyAvailability}
-                    style={{ verticalAlign: "top" }}>
-                    <div className="uk-text-small uk-text-uppercase">
-                        Economy
+            {
+                selected && selected === true ?
+                    <div className="uk-width-1-1 uk-width-1-3@m uk-padding uk-padding-remove-top uk-padding-remove-bottom">
+                        <button
+                            className={`uk-button uk-margin-small-bottom uk-padding-small uk-button-${economy ? 'default' : 'primary'}`}
+                            disabled={true}
+                        >
+                            {
+                                economy ?
+                                    <React.Fragment>
+                                        <div className="uk-text-small uk-text-uppercase">
+                                            Economy
+                                        </div>
+                                        <div style={{ margin: -5, marginBottom: -15 }}>
+                                            <small style={{ verticalAlign: "super" }}>$</small>
+                                            <span className="uk-text-large uk-text-bold">{economy.price}</span>
+                                        </div>
+                                    </React.Fragment>
+                                    :
+                                    <React.Fragment>
+                                        <div className="uk-text-small uk-text-uppercase">
+                                            Business
+                                        </div>
+                                        <div style={{ margin: -5, marginBottom: -15 }}>
+                                            <small style={{ verticalAlign: "super" }}>$</small>
+                                            <span className="uk-text-large uk-text-bold">{business.price}</span>
+                                        </div>
+                                    </React.Fragment>
+                            }
+                        </button>
+                        <button
+                            className="uk-button uk-button-default uk-margin-small-bottom uk-margin-small-left"
+                            onClick={handleChangeFlight}
+                        >
+                            Change
+                        </button>
                     </div>
-                    {
-                        economy.seats > 0 ?
-                            <React.Fragment>
-                                <div style={{ margin: -5, marginBottom: -15 }}>
-                                    <small style={{ verticalAlign: "super" }}>$</small>
-                                    <span className="uk-text-large uk-text-bold">{economy.price}</span>
-                                </div>
-                                <small className="uk-text-small uk-text-lowercase uk-text-italic">
-                                    {economy.seats} left
-                                </small>
-                            </React.Fragment>
-                            :
-                            <div className="uk-text-small uk-text-bold uk-text-capitalize">
-                                Sold out
+                    :
+                    <div className="uk-width-1-1 uk-width-1-3@m uk-padding uk-padding-remove-top uk-padding-remove-bottom">
+                        <button className="uk-button uk-button-default uk-margin-small-right uk-margin-small-bottom"
+                            disabled={economyAvailability}
+                            style={{ verticalAlign: "top" }}
+                            onClick={() => handleSelectFlight(`${type}-economy-${id}`)}
+                        >
+                            <div className="uk-text-small uk-text-uppercase">
+                                Economy
                             </div>
-                    }
-                </button>
-                <button className="uk-button uk-button-primary uk-margin-small-bottom"
-                    disabled={businessAvailability}
-                    style={{ verticalAlign: "top" }}>
-                    <div className="uk-text-small uk-text-uppercase">
-                        Business
+                            {
+                                economy.seats > 0 ?
+                                    <React.Fragment>
+                                        <div style={{ margin: -5, marginBottom: -15 }}>
+                                            <small style={{ verticalAlign: "super" }}>$</small>
+                                            <span className="uk-text-large uk-text-bold">{economy.price}</span>
+                                        </div>
+                                        <small className="uk-text-small uk-text-lowercase uk-text-italic">
+                                            {economy.seats} left
+                                        </small>
+                                    </React.Fragment>
+                                    :
+                                    <div className="uk-text-small uk-text-bold uk-text-capitalize">
+                                        Sold out
+                            </div>
+                            }
+                        </button>
+                        <button className="uk-button uk-button-primary uk-margin-small-bottom"
+                            disabled={businessAvailability}
+                            style={{ verticalAlign: "top" }}
+                            onClick={() => handleSelectFlight(`${type}-business-${id}`)}
+                        >
+                            <div className="uk-text-small uk-text-uppercase">
+                                Business
+                            </div>
+                            {
+                                business.seats > 0 ?
+                                    <React.Fragment>
+                                        <div style={{ margin: -5, marginBottom: -15 }}>
+                                            <small style={{ verticalAlign: "super" }}>$</small>
+                                            <span className="uk-text-large uk-text-bold">{business.price}</span>
+                                        </div>
+                                        <small className="uk-text-small uk-text-lowercase uk-text-italic">
+                                            {business.seats} left
+                                        </small>
+                                    </React.Fragment>
+                                    :
+                                    <div className="uk-text-small uk-text-bold uk-text-capitalize">
+                                        Sold out
+                            </div>
+                            }
+                        </button>
                     </div>
-                    {
-                        business.seats > 0 ?
-                            <React.Fragment>
-                                <div style={{ margin: -5, marginBottom: -15 }}>
-                                    <small style={{ verticalAlign: "super" }}>$</small>
-                                    <span className="uk-text-large uk-text-bold">{business.price}</span>
-                                </div>
-                                <small className="uk-text-small uk-text-lowercase uk-text-italic">
-                                    {business.seats} left
-                                </small>
-                            </React.Fragment>
-                            :
-                            <div className="uk-text-small uk-text-bold uk-text-capitalize">
-                                Sold out
-                            </div>
-                    }
-                </button>
-            </div>
+            }
         </div>
     )
 }
