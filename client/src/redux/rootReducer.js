@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import background from './reducers/background'
 import user from './reducers/user'
 import booking from './reducers/booking'
+import airport from './reducers/airport'
 
 // component reducers
 
@@ -11,5 +12,6 @@ import booking from './reducers/booking'
 export default combineReducers({
     background,
     user,
-    booking
+    booking,
+    airport
 });

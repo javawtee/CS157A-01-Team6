@@ -2,7 +2,10 @@ import Welcome from "pages/Welcome"
 import Dashboard from "pages/Dashboard";
 import UserProfile from 'pages/UserProfile'
 import Booking from "pages/Booking";
-import P404 from "pages/P404"
+import P404 from "pages/P404";
+
+import DevTest from "Test/DevTest";
+import RecoveryPassword from "pages/RecoveryPassword";
 
 const routes = [
     {
@@ -35,6 +38,19 @@ const routes = [
         path: "/booking",
         component: Booking,
         navItemName: "Booking Flight",
+    },
+    {
+        id: "recoverylink",
+        exact: true,
+        path: "/rl=:link",
+        component: RecoveryPassword
+    },
+    {
+        // this route (path="") is used for testing purpose only, will be removed in final release
+        id: "devtest",
+        exact: true,
+        path: "/devtest",
+        component: DevTest
     },
     {
         id: "notfound",

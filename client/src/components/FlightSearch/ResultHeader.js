@@ -29,7 +29,6 @@ export default function ResultHeader(props) {
         arriveTo: state.booking.searchInputs[getArriveKey()]
     }))
 
-    const [date, setDate] = useState(SELECTED_DATE)
     const [sortByInput, setSortByInput] = useState(SELECTED_SORT_BY)
     const [flightTimeInput, setFlightTimeInput] = useState(SELECTED_FLIGHT_TIME)
 

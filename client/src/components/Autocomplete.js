@@ -13,7 +13,6 @@ export class Autocomplete extends Component {
         this.suggestionListRef = null
         //this.getInputRect = () => { return ReactDOM.findDOMNode(this.inputRect).getBoundingClientRect() }
         this.setSuggestionListRef = element => this.suggestionListRef = element
-        this.arr = props.data
         this.state = {
             currentFocus: undefined,
             input: props.value,
@@ -21,8 +20,8 @@ export class Autocomplete extends Component {
         }
     }
 
-    getSuggestionParentStyle = suggestionLength => {
-        if (this.state.input === "" || this.state.closeSuggestion || this.suggestionLength === 0)
+    getSuggestionParentStyle = () => {
+        if (this.state.input === "" || this.state.closeSuggestion)
             return { display: "none" }
         return {
             position: "absolute",
@@ -35,7 +34,7 @@ export class Autocomplete extends Component {
             // top: bottom,
             // left,
             // width,
-            maxHeight: 120,
+            maxHeight: 200,
             overflowY: "auto",
             overflowX: "hidden"
         }
@@ -53,7 +52,7 @@ export class Autocomplete extends Component {
     }
 
     selectSuggestion = e => {
-        var [name, value] = e.target.id.split('-')
+        var [name, value] = e.target.id.split('@')
         this.props.onChange(e = { target: { name, value } })
         this.setState({ input: value, closeSuggestion: true })
     }
@@ -61,9 +60,13 @@ export class Autocomplete extends Component {
     createSuggestions = suggestions => {
         if (this.state.input === "" || suggestions.length === 0)
             return <React.Fragment></React.Fragment>
-        else if (this.state.closeSuggestion === false)
+        else if (this.state.closeSuggestion === false) {
             return suggestions.map((el, id) =>
-                <div id={`${this.props.name}-${el}`} key={id} style={this.getSuggestionItemStyle()} onClick={this.selectSuggestion}>{el}</div>)
+                <div id={`${this.props.name}@${el}`} key={id} style={this.getSuggestionItemStyle()} onClick={this.selectSuggestion}>
+                    {el}
+                </div>
+            )
+        }
     }
 
     handleInputKeyDown = (e, suggestions) => {
@@ -115,7 +118,8 @@ export class Autocomplete extends Component {
     }
 
     render() {
-        var suggestions = this.arr && this.arr.length > 0 ? this.arr.filter(e => e.toUpperCase().includes(this.state.input.toUpperCase())) : []
+        var data = this.props.data
+        var suggestions = data && data.length > 0 ? data.filter(e => e.toUpperCase().includes(this.state.input.toUpperCase())) : []
         return (
             <div style={{ position: "relative" }}>
                 <input
@@ -127,7 +131,10 @@ export class Autocomplete extends Component {
                         this.props.onChange(e)
                         this.setState({ input: e.target.value, currentFocus: -1 })
                     }}
-                    onFocus={() => this.setState({ closeSuggestion: false })}
+                    onFocus={e => {
+                        this.props.onFocus(e)
+                        this.setState({ input: "", closeSuggestion: false })
+                    }}
                     //onBlur={() => this.setState({ closeSuggestion: true })}
                     onKeyDown={e => this.handleInputKeyDown(e, suggestions)}
                     autoComplete="off"
