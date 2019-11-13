@@ -19,7 +19,6 @@ exports.getList = function (req, res, next) {
 
 exports.signedIn = function (req, res, next) {
     if (req.session.user) {
-        console.log(req.session.user)
         res.jsonp(req.session.user)
     }
     res.jsonp(undefined)
@@ -75,4 +74,59 @@ exports.signOut = function (req, res, next) {
         res.clearCookie(process.env.SESS_NAME)
         res.jsonp(undefined)
     })
+}
+
+exports.sendRecoveryLink = function (req, res, next) {
+    if (req.query.email) {
+        var now = new Date().getTime()
+        var recovery_link = "/rl=" + uuidv5(`${req.query.email}${now}`, '1b671a64-40d5-491e-99b0-da01ff1f3341') // it is unique link
+        var recovery_exp = now + (1000 * 60 * 15) // 15 minutes
+        conn.query('update user set recovery_link=?, recovery_exp=? where email=?', [recovery_link, recovery_exp, req.query.email],
+            (err, result) => {
+                if (err) res.status(500).json(err)
+                else if (result && result.affectedRows > 0) {
+                    res.jsonp('success')
+                } else {
+                    res.status(500).jsonp('Bad server response')
+                }
+            })
+    } else {
+        res.status(403).jsonp("Bad request")
+    }
+}
+
+exports.confirmRecoveryLink = function (req, res, next) {
+    if (req.query.link) {
+        var fulllink = "/rl=" + req.query.link
+        conn.query('select recovery_exp from user where recovery_link=?', [fulllink],
+            (err, result) => {
+                if (err) res.status(500).json(err)
+                else if (result && result.length > 0 && result[0].recovery_exp > new Date().getTime()) {
+                    res.jsonp('success')
+                } else {
+                    res.status(404).jsonp('Recovery link expired')
+                }
+            }
+        )
+    } else {
+        res.status(403).jsonp("Bad request")
+    }
+}
+
+exports.updatePassword = function (req, res, next) {
+    if (req.body.link && req.body.newPassword) {
+        var fulllink = "/rl=" + req.body.link
+        conn.query('update user set password=sha2(?,0) where recovery_link=?', [req.body.newPassword, fulllink],
+            (err, result) => {
+                if (err) res.status(500).json(err)
+                else if (result && result.affectedRows > 0) {
+                    res.jsonp('success')
+                } else {
+                    res.status(500).jsonp('Bad server response')
+                }
+            }
+        )
+    } else {
+        res.status(403).jsonp("Bad request")
+    }
 }

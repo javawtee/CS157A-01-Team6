@@ -4,7 +4,6 @@ import "stylesheets/App.css";
 import { Switch, Route } from "react-router-dom";
 import { generateRoutes } from 'utils/generators'
 import routes from "models/routes";
-import DevTest from "Test/DevTest";
 
 
 export default function App(props) {
@@ -15,8 +14,6 @@ export default function App(props) {
       {
         authenticated !== null &&
         <Switch>
-          {/* this route (path="") is used for testing purpose only, will be remove in final release */}
-          <Route exact path="/devtest" component={DevTest} />
           {generateRoutes(routes, { authenticated, defaultAuthenticatedPath: "/dashboard" })}
         </Switch>
       }

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isAfter } from 'date-fns';
-import countries from '../../Test/countries';
 import Autocomplete from '../Autocomplete';
 
 import { generateOptions } from 'utils/generators';
@@ -11,8 +10,14 @@ import flightTimeOptions from 'models/flightTimeOptions';
 import flightClassOptions from 'models/flightClassOptions';
 import sortByOptions from 'models/sortByOptions';
 
+import UIkit from 'uikit';
+
 export default function SearchField(props) {
   const dispatch = useDispatch()
+
+  const { airportList } = useSelector(state => ({
+    airportList: state.airport.list
+  }))
 
   const { MAX_PRICE, DEPART_TIME, ARRIVE_TIME, FLIGHT_CLASS, SORT_BY } = props
   const DEFAULT_MAX_PRICE = MAX_PRICE || 2000
@@ -29,6 +34,8 @@ export default function SearchField(props) {
   const [flightClassInput, setFlightClassInput] = useState(DEFAULT_FLIGHT_CLASS)
   const [maxPrice, setMaxPrice] = useState(+DEFAULT_MAX_PRICE)
   const [sortByInput, setSortByInput] = useState(DEFAULT_SORT_BY)
+
+  const [validSearchInputs, validateSearchInputs] = useState({ flightFrom: true, flightTo: true })
 
   useEffect(() => {
     // minDate of ToDate-DatePicker can't be before selected fromDate
@@ -53,15 +60,41 @@ export default function SearchField(props) {
 
   const handleSelectSortByOption = e => setSortByInput(e.target.value)
 
-  const handleOnChangeAutoComplete = e => setSearchInputs({ ...searchInputs, [e.target.name]: e.target.value })
+  const handleOnChangeAutoComplete = e => {
+    validateSearchInputs({ ...validSearchInputs, [e.target.name]: true })
+    setSearchInputs({ ...searchInputs, [e.target.name]: e.target.value })
+  }
+
+  const handleOnFocusAutoComplete = e => {
+    validateSearchInputs({ ...validSearchInputs, [e.target.name]: true })
+    setSearchInputs({ ...searchInputs, [e.target.name]: "" })
+  }
 
   const handleSubmit = e => {
     e.preventDefault()
+    // validate searchInputs
+    let { flightFrom, flightTo } = searchInputs
+    let validFlightFrom = flightFrom.length > 0 && airportList.includes(flightFrom)
+    let validFlightTo = flightTo.length > 0 && airportList.includes(flightTo)
+    if (!validFlightFrom || !validFlightTo) {
+      return validateSearchInputs({ flightFrom: validFlightFrom, flightTo: validFlightTo })
+    }
+
+    // // get airport code only
+    const extractAirportCode = airport => {
+      return airport.split(',')[1].trim().substring(0, 3)
+    }
+
     dispatch({
       type: "BOOKING_APPLY_SEARCH",
       payload: {
         isRoundTrip: tripType.roundtrip,
-        searchInputs, dateInputs, flightTimeInputs, numOfPassengers, flightClassInput, maxPrice, sortByInput
+        searchInputs: {
+          flightFrom: extractAirportCode(flightFrom),
+          flightTo: extractAirportCode(flightTo),
+        },
+        maxPrice: maxPrice === DEFAULT_MAX_PRICE ? "any" : maxPrice,
+        dateInputs, flightTimeInputs, numOfPassengers, flightClassInput, sortByInput,
       }
     })
   }
@@ -95,12 +128,16 @@ export default function SearchField(props) {
         <div className='uk-width-1-2@s'>
           <small>Flight From</small>
           <Autocomplete
-            className='uk-input uk-form-small'
+            className={`uk-input uk-form-small ${validSearchInputs.flightFrom ? "" : "uk-form-danger"}`}
             name="flightFrom"
-            data={countries}
+            data={airportList}
             value={searchInputs.flightFrom}
             onChange={handleOnChangeAutoComplete}
+            onFocus={handleOnFocusAutoComplete}
           />
+          <small style={{ color: "red", display: validSearchInputs.flightFrom ? "none" : "" }}>
+            Invalid. Please select a suggestion
+          </small>
           {/* <input className='uk-input' type='text' name='flightFrom' value={searchInputs.flightFrom} onChange={handleInputChange} /> */}
         </div>
         <div className='uk-width-1-3 uk-width-1-5@s'>
@@ -118,12 +155,16 @@ export default function SearchField(props) {
         <div className='uk-width-1-2@s'>
           <small>Flight To</small>
           <Autocomplete
-            className='uk-input uk-form-small'
+            className={`uk-input uk-form-small ${validSearchInputs.flightTo ? "" : "uk-form-danger"}`}
             name="flightTo"
-            data={countries}
+            data={airportList}
             value={searchInputs.flightTo}
             onChange={handleOnChangeAutoComplete}
+            onFocus={handleOnFocusAutoComplete}
           />
+          <small style={{ color: "red", display: validSearchInputs.flightTo ? "none" : "" }}>
+            Invalid. Please select a suggestion
+          </small>
         </div>
         <div className='uk-width-1-3 uk-width-1-5@s'>
           <small>Arrive Date</small>
