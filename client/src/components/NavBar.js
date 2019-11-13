@@ -15,13 +15,21 @@ export default function NavBar(props) {
                             <li><a href="#sign-out" onClick={e => { e.preventDefault(); dispatch({ type: "SIGN_OUT" }) }}>
                                 Sign Out
                             </a></li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-            <div style={{ backgroundColor: "darkgrey" }} uk-height-viewport="offset-top: true">
-                {props.content || props.children}
-            </div>
-        </React.Fragment>
-    )
+                                <li className={this.props.profile ? "uk-active" : ""}><a href="/profile">
+                                    User Profile
+                            </a></li>
+                                <li className={this.props.booking ? "uk-active" : ""}><a href="/booking">
+                                    Booking Flight
+                            </a></li>
+                                <li><a href="#sign-out" onClick={e => { e.preventDefault(); this.props.signOut() }}>
+                                    Sign Out
+                            </a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div uk-height-viewport="offset-top: true">{this.props.content}</div>
+            </React.Fragment>
+        )
+    }
 }

@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { Component } from 'react'
+import CurrentFlight from '../Dashboard/CurrentFlight'
+import PastFlights from '../Dashboard/PastFlights'
 
-const FlightHistory = () => {
-    return (
-        <div className = "Flight-List section">
-                <div className = "card-content grey-text text-darken-3">
-                    <span className = "Airline-title">Airline</span>
-                    <p>Served by AST 6, this is a list of travels in AST 6</p>
-                    <p className = "grey-text">Date: </p>
-                </div>
-            </div>
+class FlightHistory extends Component {
+
+    render() {
+        return (
+        <React.Fragment>
+            <CurrentFlight/>
+            <PastFlights/> 
+        </React.Fragment>
     )
 }
+}
 
-export default FlightHistory
+export default FlightHistory;
