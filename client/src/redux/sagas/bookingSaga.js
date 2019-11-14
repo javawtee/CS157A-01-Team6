@@ -1,11 +1,20 @@
 import { all, takeEvery, takeLatest, call, put } from 'redux-saga/effects'
 import types from '../types';
+import { flight } from 'apis/builder'
+import services from 'apis/services'
 
 function* APPLY_SEARCH({ payload }) {
-    yield put({
-        type: "SET_APPLY_SEARCH",
-        payload
-    })
+    try {
+        let requestCall = flight.getSearchFlightCall(payload)
+        let ticketList = yield call(services.searchFlight, requestCall)
+        console.log(ticketList)
+        // yield put({
+        //     type: "SET_APPLY_SEARCH",
+        //     payload
+        // })
+    } catch (e) {
+        alert(e.message)
+    }
 }
 
 function* GO_SEARCH() {

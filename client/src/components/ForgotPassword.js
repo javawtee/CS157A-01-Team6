@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import UIkit from "uikit"
-import {validateEmailFormat} from 'utils/validators'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import UIkit from "uikit";
+import { validateEmailFormat } from 'utils/validators';
 
 const initialState = {
     email: "",
@@ -8,22 +9,21 @@ const initialState = {
 }
 
 export class ForgotPassword extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = initialState
     }
-    
-    handleChange = e => this.setState({[e.target.name] : e.target.value, valid: true})
+
+    handleChange = e => this.setState({ [e.target.name]: e.target.value, valid: true })
 
     handleSubmit = e => {
         e.preventDefault()
         let validEmail = this.state.email.length > 0 && validateEmailFormat(this.state.email)
-        if(!validEmail){
-            return this.setState({valid: false})
+        if (!validEmail) {
+            return this.setState({ valid: false })
         }
 
-        // TODO: call API
-        alert("Send reset password to: " + this.state.email)
+        this.props.dispatch({ type: "RECOVERY_LINK", email: this.state.email })
     }
 
     render() {
@@ -36,9 +36,11 @@ export class ForgotPassword extends Component {
                         <h2 className="uk-modal-title">Easy to reset your password</h2>
                     </div>
                     <div className="uk-modal-body">
-                            <input id="email" className={`uk-input ${this.state.valid ? '': 'uk-form-danger'}`} type="text" placeholder="Enter your registered email"
-                            name="email" onChange={this.handleChange} value={this.state.email}/>
-                        <small style={{color:"red", display: this.state.valid ? "none" : ""}}>Please enter a valid email</small>
+                        <input id="email" className={`uk-input ${this.state.valid ? '' : 'uk-form-danger'}`}
+                            type="text" placeholder="Enter your registered email"
+                            name="email" onChange={this.handleChange} value={this.state.email}
+                            autoComplete="off" />
+                        <small style={{ color: "red", display: this.state.valid ? "none" : "" }}>Please enter a valid email</small>
                     </div>
                     <div className="uk-modal-footer uk-text-right">
                         <button className="uk-button uk-button-primary uk-margin-small-right" onClick={this.handleSubmit}>Submit</button>
@@ -50,4 +52,4 @@ export class ForgotPassword extends Component {
     }
 }
 
-export default ForgotPassword
+export default connect(null, null)(ForgotPassword);

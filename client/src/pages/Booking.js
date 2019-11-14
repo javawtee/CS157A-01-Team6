@@ -6,6 +6,10 @@ import FlightReservationMain from 'components/FlightReservation/FlightReservatio
 import FlightSummary from 'components/FlightSummary'
 
 class Booking extends Component {
+    componentDidMount = () => {
+        this.props.getAirportList()
+    }
+
     getView = () => {
         var { currentStep, isRoundTrip,
             validForReservation, toReservation,
@@ -83,7 +87,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    initLoad: () => dispatch({ type: "BOOKING_INIT_LOAD" }),
+    getAirportList: () => dispatch({ type: "AIRPORT_GET_LIST" }),
     toReservation: () => dispatch({ type: "BOOKING_TO_RESERVATION" })
 })
 

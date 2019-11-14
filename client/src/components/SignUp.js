@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import UIkit from "uikit"
 import { validateEmailFormat, validateStrongPassword } from 'utils/validators'
+import PasswordField from './PasswordField'
 
 const initialState = {
     firstName: '',
@@ -55,13 +56,11 @@ export class SignUp extends Component {
             })
         }
 
-        // TODO: call API
         this.props.sendSignUpForm({ firstName, lastName, middleInitial, signupEmail, signupPassword }, response => {
-            console.log(response)
             switch (response) {
                 case 'success':
                     UIkit.modal('#signUp').hide()
-                    return UIkit.notification("Successfully signed up an account", { status: 'success', timeout: 2000 })
+                    return UIkit.modal.dialog('<p class="uk-modal-body" style="color:green;text-align:center;">Successfully created an account</p>')
                 case 'duplicate':
                     return this.setState({ duplicateEmail: true, confirmEmail: '' })
                 default:
@@ -119,24 +118,16 @@ export class SignUp extends Component {
                                     name="confirmEmail" onChange={this.handleChange} value={this.state.confirmEmail} />
                                 <small style={{ color: "red", display: this.state.validconfirmEmail ? "none" : "" }}>Email is not matching</small>
                             </div>
-                            <div className="uk-width-1-1">
-                                <label className="uk-form-label uk-text-bold" htmlFor="form-stacked-text">Password</label>
-                                <input id="signupPassword" className={`uk-input ${this.state.validsignupPassword ? '' : 'uk-form-danger'}`} type="password" placeholder="Password"
-                                    name="signupPassword" onChange={this.handleChange} value={this.state.signupPassword}
-                                    onFocus={this.handleOnFocusPassword} />
-                                <small style={{ color: "red", display: this.state.validsignupPassword ? "none" : "" }}>Password is too simple</small>
-                                <p style={{ marginTop: '1px' }}>
-                                    <small>* Password must have at least 6 characters</small><br />
-                                    <small>* Password should contain at least a letter or a number</small><br />
-                                    <small>* Password should contain a special character (!@#$%^&*)</small><br />
-                                </p>
-                            </div>
-                            <div className="uk-width-1-1">
-                                <label className="uk-form-label uk-text-bold" htmlFor="form-stacked-text">Confirm password</label>
-                                <input id="confirmPassword" className={`uk-input ${this.state.validconfirmPassword ? '' : 'uk-form-danger'}`} type="password" placeholder="Confirm password"
-                                    name="confirmPassword" onChange={this.handleChange} value={this.state.confirmPassword} />
-                                <small style={{ color: "red", display: this.state.validconfirmPassword ? "none" : "" }}>Password is not matching</small>
-                            </div>
+                            <PasswordField
+                                passwordId="signupPassword"
+                                passwordValue={this.state.signupPassword}
+                                isValidPassword={this.state.validsignupPassword}
+                                confirmPasswordId="confirmPassword"
+                                confirmPasswordValue={this.state.confirmPassword}
+                                isValidConfirmPassword={this.state.validconfirmPassword}
+                                onChange={this.handleChange}
+                                onFocus={this.handleOnFocusPassword}
+                            />
                         </form>
                     </div>
                     <div className="uk-modal-footer uk-text-right">

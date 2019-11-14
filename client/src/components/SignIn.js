@@ -38,7 +38,7 @@ export class SignIn extends Component {
 
     render() {
         return (
-            <div className="uk-card uk-card-default uk-card-body uk-width-1-2@m uk-align-center">
+            <div className="uk-card uk-card-default uk-card-body uk-width-1-2@l uk-align-center">
                 <form id="signInForm" className="uk-from-stacked" onSubmit={this.submitSignIn}>
                     <div className="uk-child-width-1-1">
                         <div className="uk-inline">
