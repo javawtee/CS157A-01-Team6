@@ -18,6 +18,7 @@ router.get('/user/signout', User.signOut)
 router.get('/user/recoverylink', User.sendRecoveryLink)
 router.get('/user/confirmrecoverylink', User.confirmRecoveryLink)
 router.post('/user/updatepassword', User.updatePassword)
+router.put('/user/updatepreference', User.updatePreference)
 
 // airport
 router.get('/airport', Airport.getList)

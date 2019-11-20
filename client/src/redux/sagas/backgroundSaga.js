@@ -5,6 +5,7 @@ import services from '../../apis/services'
 function* SIGNED_IN() {
     let ret = yield call(services.signedIn)
     if (ret.data !== "") {
+        yield put({ type: types.SET_USER, info: { ...ret.data.info }, preference: { ...ret.data.preference } })
         yield put({ type: types.SET_AUTHENTICATED })
     } else {
         sessionStorage.clear()

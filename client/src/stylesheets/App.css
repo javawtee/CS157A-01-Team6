@@ -38,3 +38,8 @@
 .uk-modal {
   padding: 0
 }
+
+#user-profile li {
+  border: 1px solid black;
+  margin-top: 5px;
+}

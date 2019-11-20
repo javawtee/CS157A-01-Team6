@@ -14,6 +14,7 @@ const services = {
     sendRecoveryLink: email => { return axios.get(urls.user.recoverylink + "?" + `email=${email}`) },
     confirmRecoveryLink: link => { return axios.get(urls.user.confirmrecoverylink + "?" + `link=${link}`) },
     updatePassword: payload => { return axios.post(urls.user.updatepassword, payload) },
+    updatePreference: payload => { return axios.put(urls.user.updatepreference, payload) },
 
     // airport
     getAirportList: () => { return axios.get(urls.airport.getlist) },
