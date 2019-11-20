@@ -15,6 +15,7 @@ const urls = {
         recoverylink: `${userRoot}/recoverylink`,
         confirmrecoverylink: `${userRoot}/confirmrecoverylink`,
         updatepassword: `${userRoot}/updatepassword`,
+        updatepreference: `${userRoot}/updatepreference`,
     },
     airport: {
         getlist: `${airportRoot}`

@@ -10,8 +10,6 @@ import flightTimeOptions from 'models/flightTimeOptions';
 import flightClassOptions from 'models/flightClassOptions';
 import sortByOptions from 'models/sortByOptions';
 
-import UIkit from 'uikit';
-
 export default function SearchField(props) {
   const dispatch = useDispatch()
 
@@ -19,21 +17,24 @@ export default function SearchField(props) {
     airportList: state.airport.list
   }))
 
-  const { MAX_PRICE, DEPART_TIME, ARRIVE_TIME, FLIGHT_CLASS, SORT_BY } = props
-  const DEFAULT_MAX_PRICE = MAX_PRICE || 2000
-  const DEFAULT_DEPART_TIME = DEPART_TIME || flightTimeOptions[0]
-  const DEFAULT_ARRIVE_TIME = ARRIVE_TIME || flightTimeOptions[0]
-  const DEFAULT_FLIGHT_CLASS = FLIGHT_CLASS || flightClassOptions[0]
-  const DEFAULT_SORT_BY = SORT_BY || sortByOptions[0]
+  const { departTime, arriveTime, flightClass, maxPrice, sortBy, DEFAULT_MAX_PRICE } =
+    useSelector(state => ({
+      departTime: state.user.preference.departTime,
+      arriveTime: state.user.preference.arriveTime,
+      flightClass: state.user.preference.flightClass,
+      maxPrice: state.user.preference.maxPrice,
+      sortBy: state.user.preference.sortBy,
+      DEFAULT_MAX_PRICE: state.user.DEFAULT_MAX_PRICE,
+    }))
 
   const [tripType, setTripType] = useState({ roundtrip: true })
   const [searchInputs, setSearchInputs] = useState({ flightFrom: '', flightTo: '' });
   const [dateInputs, setDateInputs] = useState({ fromDate: new Date(), toDate: new Date() })
-  const [flightTimeInputs, setFlightTimeInputs] = useState({ fromOption: DEFAULT_DEPART_TIME, toOption: DEFAULT_ARRIVE_TIME })
+  const [flightTimeInputs, setFlightTimeInputs] = useState({ fromOption: departTime, toOption: arriveTime })
   const [numOfPassengers, setNumOfPassengers] = useState(1)
-  const [flightClassInput, setFlightClassInput] = useState(DEFAULT_FLIGHT_CLASS)
-  const [maxPrice, setMaxPrice] = useState(+DEFAULT_MAX_PRICE)
-  const [sortByInput, setSortByInput] = useState(DEFAULT_SORT_BY)
+  const [flightClassInput, setFlightClassInput] = useState(flightClass)
+  const [maxPriceInput, setMaxPrice] = useState(+maxPrice)
+  const [sortByInput, setSortByInput] = useState(sortBy)
 
   const [validSearchInputs, validateSearchInputs] = useState({ flightFrom: true, flightTo: true })
 
@@ -93,7 +94,7 @@ export default function SearchField(props) {
           flightFrom: extractAirportCode(flightFrom),
           flightTo: extractAirportCode(flightTo),
         },
-        maxPrice: maxPrice === DEFAULT_MAX_PRICE ? "any" : maxPrice,
+        maxPrice: maxPriceInput,
         dateInputs, flightTimeInputs, numOfPassengers, flightClassInput, sortByInput,
       }
     })
@@ -186,8 +187,8 @@ export default function SearchField(props) {
               {generateOptions('uk-select uk-form-small', handleSelectFlightClassOption, flightClassInput, flightClassOptions)}
             </div>
             <div className='uk-margin-small-top uk-width-1-3@s'>
-              <small>Max price: {maxPrice === DEFAULT_MAX_PRICE ? "Any" : maxPrice} </small>
-              <input className='uk-range' type='range' min='50' max={DEFAULT_MAX_PRICE} step='50' value={maxPrice} onChange={handleSetMaxPrice} />
+              <small>Max price: {maxPriceInput === DEFAULT_MAX_PRICE ? "Any" : maxPriceInput} </small>
+              <input className='uk-range' type='range' min='50' max={DEFAULT_MAX_PRICE} step='50' value={maxPriceInput} onChange={handleSetMaxPrice} />
             </div>
             <div className='uk-margin-small-top uk-width-1-3@s'>
               <small>Sort by</small>
