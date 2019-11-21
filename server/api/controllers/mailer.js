@@ -1,4 +1,7 @@
-var transporter = nodemailer.createTransport({
+const nodemailer = require("nodemailer");
+
+
+    var transporter = nodemailer.createTransport({
     service: 'gmail',
     debug:true,
     auth: {
@@ -8,14 +11,12 @@ var transporter = nodemailer.createTransport({
 });
 
     // send mail with defined transport object
-    var mailOptions = function (toEmail)  { 
+    var mailOptions = function (toEmail, resetLink)  { 
         return {
-
         from: 'cs157ateam6@gmail.com', // sender address
         to: toEmail, // list of receivers
         subject: 'Reset Password', // Subject line
-        text: 'Generate the password from database, or generate a new password and send to user', // plain text body
-        //html: 
+        text: `Please click the following link to reset password\n ${resetLink}` 
         }
     };
 

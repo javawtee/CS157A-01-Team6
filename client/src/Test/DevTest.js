@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "components/NavBar";
 import ProfileForm from "components/ProfileForm"
+import ReservationDetail from 'components/ReservationDetail'
 
 export default function DevTest() {
   return (
@@ -17,8 +18,7 @@ export default function DevTest() {
 
       {/* Add Component here */}
 
-   
-     <ProfileForm/>
+     <ReservationDetail/>
     </div>
   );
 }
