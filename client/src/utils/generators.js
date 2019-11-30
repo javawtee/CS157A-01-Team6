@@ -9,6 +9,13 @@ export function generateOptions(className, onChange, defaultValue, listOfOptions
 }
 
 export function generateComponents(listOfData, ParentComponent, options) {
+    if (listOfData.length === 0) {
+        return (
+            <div className="uk-margin-auto@s uk-margin-remove-top uk-margin-remove-bottom uk-width-1-1 uk-padding-small uk-card uk-card-default">
+                Found no record
+            </div>
+        )
+    }
     return listOfData.map((data, id) =>
         React.createElement(ParentComponent, { key: id, id, data, ...options }, null))
 }
@@ -20,6 +27,7 @@ export function generateNavItems(listOfRoutes, currentViewPath) {
                 React.createElement("a", { key: route.id, href: route.path }, [route.navItemName])
             ])
         }
+        return null
     })
 }
 

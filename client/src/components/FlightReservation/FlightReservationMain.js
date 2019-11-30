@@ -1,14 +1,16 @@
-import React, { Component } from 'react'
-import getPassengerForm from 'models/passenger'
-import ResvPassenger from './ResvPassenger'
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import getPassengerForm from 'models/passenger';
+import ResvPassenger from './ResvPassenger';
+import UIkit from 'uikit';
+import { validateEmailFormat } from 'utils/validators'
 
 export class FlightReservationMain extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            // limit: allowed number of passengers on each reservation; 
-            // value should be same as number of seats left at the time user click to reserve
-            seatLeft: 5,
+            // limit: allowed number of passengers on each reservation
+            seatsLeft: 5,
             passengers: [getPassengerForm()]
         }
     }
@@ -20,11 +22,12 @@ export class FlightReservationMain extends Component {
             form={passengerForm}
             onChange={this.handleChangePassengerForm}
             onRemove={this.handleRemovePassengerForm}
-        />)
+        />
+    )
 
     handleAddNewPassengerForm = e => {
-        var { seatLeft, passengers } = this.state
-        if (passengers.length === seatLeft) return alert(`Maximum of ${seatLeft} passengers per reservation`)
+        var { seatsLeft, passengers } = this.state
+        if (passengers.length === seatsLeft) return alert(`Maximum of ${seatsLeft} passengers per reservation`)
         var newPassengers = passengers
         newPassengers.push(getPassengerForm())
         this.setState({ passengers: newPassengers })
@@ -42,12 +45,54 @@ export class FlightReservationMain extends Component {
         var { passengers } = this.state
         var newPassengers = passengers
         newPassengers[e.target.id][e.target.name] = e.target.value  // e.target.id is index of passengers array
+        newPassengers[e.target.id][`valid${e.target.name}`] = true // reset validation
+        if (e.target.name === "sendConfirmation" && e.target.value === "no") {
+            newPassengers[e.target.id].reservationEmail = ""
+            newPassengers[e.target.id].validreservationEmail = true
+        }
         this.setState({ passengers: newPassengers })
     }
 
     handleSubmit = e => {
         e.preventDefault()
-        console.log(this.state)
+        let valid = true
+        let passengers = this.state.passengers
+        let seenID = []
+        for (var i in passengers) {
+            let { firstName, lastName, middleInitial, reservationEmail, IDNumber, sendConfirmation } = passengers[i]
+            let validfirstName = firstName.length > 1
+            let validlastName = lastName.length > 1
+            let validmiddleInitial = middleInitial.length === 0 || (middleInitial.length > 0 && isNaN(middleInitial))
+            let validreservationEmail = sendConfirmation === "no" || (reservationEmail.length > 0 && validateEmailFormat(reservationEmail))
+            let validIDNumber = IDNumber.length > 5
+            if (!validfirstName || !validlastName || !validmiddleInitial || !validreservationEmail || !validIDNumber) {
+                passengers[i] = {
+                    ...passengers[i],
+                    validfirstName, validlastName, validmiddleInitial,
+                    validreservationEmail, validIDNumber
+                }
+                valid = false
+            }
+            if (validIDNumber && !seenID.includes(IDNumber)) {
+                seenID.push(IDNumber)
+            }
+        }
+        if (!valid) {
+            return this.setState({ passengers })
+        }
+        if (seenID.length !== this.state.passengers.length) {
+            return UIkit.notification("Found duplicate ID", { status: 'danger', timeout: 2000 })
+        }
+
+        const getFlightClass = flight => {
+            return flight.ecoPrice ? "economy" : "business"
+        }
+
+        let departFlight = this.props.children[0].props.selectedDepartFlight
+        departFlight.flightClass = getFlightClass(departFlight)
+        let returnFlight = this.props.children[1] ? this.props.children[1].props.selectedReturnFlight : undefined
+        returnFlight.flightClass = this.props.children[1] ? getFlightClass(returnFlight) : undefined
+        this.props.finalizeBooking({ departFlight, returnFlight, passengers })
     }
 
     render() {
@@ -72,12 +117,16 @@ export class FlightReservationMain extends Component {
                 </div>
                 {this.getPassengerFormView()}
                 <form className="uk-width-1-1 uk-flex uk-flex-right uk-margin-large-right" onSubmit={this.handleSubmit}>
-                    <button className="uk-button uk-button-primary" type="submit">Continue</button>
+                    <button className="uk-button uk-button-primary" type="submit">Finish</button>
                 </form>
             </div>
         )
     }
 }
 
-export default FlightReservationMain
+const mapDispatchToProps = dispatch => ({
+    finalizeBooking: payload => dispatch({ type: "FINALIZE_BOOKING", payload })
+})
+
+export default connect(null, mapDispatchToProps)(FlightReservationMain)
 

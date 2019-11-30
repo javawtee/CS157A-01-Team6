@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isAfter } from 'date-fns';
 import Autocomplete from '../Autocomplete';
 
+import converter from "utils/converter";
 import { generateOptions } from 'utils/generators';
 import flightTimeOptions from 'models/flightTimeOptions';
 import flightClassOptions from 'models/flightClassOptions';
@@ -88,21 +89,26 @@ export default function SearchField(props) {
 
     dispatch({
       type: "BOOKING_APPLY_SEARCH",
-      payload: {
+      inputs: {
         isRoundTrip: tripType.roundtrip,
         searchInputs: {
           flightFrom: extractAirportCode(flightFrom),
           flightTo: extractAirportCode(flightTo),
         },
         maxPrice: maxPriceInput,
-        dateInputs, flightTimeInputs, numOfPassengers, flightClassInput, sortByInput,
+        dateInputs,
+        departTimeId: converter.optionTextToId(flightTimeOptions, flightTimeInputs.fromOption),
+        arriveTimeId: converter.optionTextToId(flightTimeOptions, flightTimeInputs.toOption),
+        numOfPassengers,
+        flightClassId: converter.optionTextToId(flightClassOptions, flightClassInput),
+        sortById: converter.optionTextToId(sortByOptions, sortByInput),
       }
     })
   }
 
   return (
     <form
-      className='uk-margin-auto uk-margin-small-top uk-card uk-card-default uk-card-small uk-card-body uk-grid-small uk-width-1-2@s' uk-grid=''
+      className='uk-margin-auto uk-margin-small-top uk-card uk-card-default uk-card-small uk-card-body uk-grid-small uk-width-1-2@l' uk-grid=''
       onSubmit={handleSubmit}
     >
       <div className='uk-card-header'><h4>Book a Flight</h4></div>
@@ -168,12 +174,12 @@ export default function SearchField(props) {
           </small>
         </div>
         <div className='uk-width-1-3 uk-width-1-5@s'>
-          <small>Arrive Date</small>
+          <small>Return Date</small>
           <DatePicker className='uk-input uk-form-small' dateFormat='MM/dd'
             minDate={dateInputs.fromDate} selected={dateInputs.toDate} onChange={handleToDateChange} disabled={!tripType.roundtrip} />
         </div>
         <div className='uk-width-1-4@s'>
-          <small>Arrive time</small>
+          <small>Return time</small>
           {generateOptions('uk-select uk-form-small', handleSelectFlightTimeOption,
             flightTimeInputs.toOption, flightTimeOptions, { name: "toOption", disabled: !tripType.roundtrip })}
         </div>

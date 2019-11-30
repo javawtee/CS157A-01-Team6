@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from 'react-redux'
 import "stylesheets/App.css";
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import { generateRoutes } from 'utils/generators'
 import routes from "models/routes";
 

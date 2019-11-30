@@ -44,7 +44,10 @@ const searchSession = {
         }
         return false
     },
-    clearSession: () => setSession(initial)
+    clearSession: () => setSession(initial),
+    remove: () => {
+        sessionStorage.removeItem(sessionName)
+    }
 }
 
 export default searchSession

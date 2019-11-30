@@ -9,7 +9,9 @@ import { getTimeIn12HourFormat, calcDuration } from 'utils/datetime'
 
 export default function ResultItem(props) {
     const { id, selected, type, handleSelectFlight, handleChangeFlight } = props
-    const { depTime, arrTime, economy, business } = props.data
+    const { depTime, arrTime } = props.data
+    const economy = { price: props.data.ecoPrice, seats: props.data.ecoSeats }
+    const business = { price: props.data.busPrice, seats: props.data.busSeats }
     const economyAvailability = economy && economy.seats < 1
     const businessAvailability = business && business.seats < 1
 
@@ -33,7 +35,7 @@ export default function ResultItem(props) {
                             disabled={true}
                         >
                             {
-                                economy ?
+                                economy.price ?
                                     <React.Fragment>
                                         <div className="uk-text-small uk-text-uppercase">
                                             Economy

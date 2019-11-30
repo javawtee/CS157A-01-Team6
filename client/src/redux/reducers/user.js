@@ -9,6 +9,8 @@ const initialState = {
   preference: null,
   confirmedRecoveryLink: false,
   DEFAULT_MAX_PRICE: 2000,
+  flights: [],
+  bookingPassengers: undefined,
 }
 
 const getPreference = payload => {
@@ -33,6 +35,14 @@ export default function userReducer(state = initialState, action) {
       return { ...state, confirmedRecoveryLink: action.status }
     case "SET_PREFERENCE":
       return { ...state, preference: getPreference(action.preference) }
+    case "SET_USER_FLIGHTS":
+      return { ...state, flights: action.flights }
+    case "SET_UPDATED_BOOKING_DETAIL":
+      let newBookingPassengers = state.bookingPassengers
+      newBookingPassengers[action.id].isChecked = action.isChecked
+      return { ...state, bookingPassengers: newBookingPassengers }
+    case "SET_USER_BOOKING_DETAIL":
+      return { ...state, bookingPassengers: action.bookingPassengers }
     default:
       return state
   }

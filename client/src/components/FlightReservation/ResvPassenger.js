@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { generateOptions } from 'utils/generators'
 import IDTypeOptions from 'models/IDTypeOptions'
 
 export default function ResvPassenger(props) {
     var { id, form, onChange, onRemove } = props
+    const [sendConfirmation, setSendConfirmation] = useState(false)
 
     const handleCheckBox = e => {
         e.target.value = e.target.checked ? "yes" : "no"
+        setSendConfirmation(e.target.checked)
         onChange(e)
     }
 
@@ -30,19 +32,25 @@ export default function ResvPassenger(props) {
             <div className="uk-width-1-1 uk-padding-remove uk-margin-remove" uk-grid="">
                 <div className="uk-width-1-3@s">
                     <small>First Name</small>
-                    <input className="uk-input uk-form-small" id={id} name="firstName" value={form.firstName}
+                    <input id={id} name="firstName" value={form.firstName}
+                        className={`uk-input uk-form-small ${form.validfirstName ? '' : 'uk-form-danger'}`}
                         onChange={onChange} />
+                    <small style={{ color: "red", display: form.validfirstName ? "none" : "" }}>First name is too short</small>
                 </div>
                 <div className="uk-width-1-3@s">
                     <small>Last Name</small>
-                    <input className="uk-input uk-form-small" id={id} name="lastName" value={form.lastName}
+                    <input id={id} name="lastName" value={form.lastName}
+                        className={`uk-input uk-form-small ${form.validlastName ? '' : 'uk-form-danger'}`}
                         onChange={onChange} />
+                    <small style={{ color: "red", display: form.validlastName ? "none" : "" }}>Last name is too short</small>
                 </div>
                 <div className="uk-width-1-3 uk-width-1-6@s uk-margin-remove">
                     <small>Middle Initial</small>
-                    <input className="uk-input uk-form-small" maxLength={1}
+                    <input maxLength={1}
+                        className={`uk-input uk-form-small ${form.validmiddleInitial ? '' : 'uk-form-danger'}`}
                         id={id} name="middleInitial" value={form.middleInitial}
                         onChange={onChange} />
+                    <small style={{ color: "red", display: form.validmiddleInitial ? "none" : "" }}>Alphabetics only</small>
                 </div>
             </div>
             <div className="uk-width-1-1 uk-padding-remove uk-margin-remove" uk-grid="">
@@ -52,26 +60,35 @@ export default function ResvPassenger(props) {
                 </div>
                 <div className="uk-width-1-4@s">
                     <small>ID Number</small>
-                    <input className="uk-input uk-form-small" id={id} name="IDNumber" value={form.IDNumber}
-                        onChange={onChange} autoComplete="off"/>
+                    <input id={id} name="IDNumber" value={form.IDNumber}
+                        className={`uk-input uk-form-small ${form.validIDNumber ? '' : 'uk-form-danger'}`}
+                        onChange={onChange} autoComplete="off" />
+                    <small style={{ color: "red", display: form.validIDNumber ? "none" : "" }}>ID number is not valid</small>
                 </div>
             </div>
             <div className="uk-width-1-1 uk-padding-remove uk-margin-remove" uk-grid="">
-                <div className="uk-width-1-3@s">
-                    <small>Email (optional)</small>
-                    <input className="uk-input uk-form-small" id={id} name="email" value={form.email}
-                        onChange={onChange} />
-                </div>
                 <div className="uk-margin-auto-top uk-width-1-3@s">
-                    <label>
-                        <input className="uk-checkbox uk-margin-small-right" type="checkbox" 
-                            id={id}
-                            name="sendConfirmation"
-                            onChange={handleCheckBox}/> 
-                        <small>Send confirmation to email</small>
-                    </label>
+                        <label>
+                            <input className="uk-checkbox uk-margin-small-right" type="checkbox" 
+                                id={id}
+                                name="sendConfirmation"
+                                onChange={handleCheckBox}/> 
+                            <small>Send confirmation to email</small>
+                        </label>
                 </div>
             </div>
+            {
+                sendConfirmation &&
+                <div className="uk-width-1-1 uk-padding-remove uk-margin-remove" uk-grid="">
+                    <div className="uk-width-1-3@s">
+                        <small>Email (optional)</small>
+                        <input id={id} name="reservationEmail" value={form.reservationEmail}
+                            className={`uk-input uk-form-small ${form.validreservationEmail ? '' : 'uk-form-danger'}`}
+                            onChange={onChange}/>
+                        <small style={{ color: "red", display: form.validreservationEmail ? "none" : "" }}>Email is not valid</small>
+                    </div>
+                </div>
+            }
         </div>
     )
 }

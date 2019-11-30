@@ -19,12 +19,16 @@ router.get('/user/recoverylink', User.sendRecoveryLink)
 router.get('/user/confirmrecoverylink', User.confirmRecoveryLink)
 router.post('/user/updatepassword', User.updatePassword)
 router.put('/user/updatepreference', User.updatePreference)
+router.get('/user/getflights', User.getFlights)
+router.get('/user/getbookingdetail', User.getBookingDetail)
+router.post('/user/cancelbooking', User.cancelBooking)
 
 // airport
 router.get('/airport', Airport.getList)
 
 // flight
 router.get('/flight', Flight.searchFlight)
+router.post('/flight/finalizebooking', Flight.finalizeBooking)
 
 
 module.exports = router

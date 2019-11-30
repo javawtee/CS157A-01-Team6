@@ -45,6 +45,9 @@ const bookingSession = {
     navTo: i => {
         set("current", i)
     },
+    remove: () => {
+        sessionStorage.removeItem(sessionName)
+    }
 }
 
 export default bookingSession
