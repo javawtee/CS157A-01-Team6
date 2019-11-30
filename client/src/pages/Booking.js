@@ -8,32 +8,44 @@ import FlightSummary from 'components/FlightSummary'
 class Booking extends Component {
     componentDidMount = () => {
         this.props.getAirportList()
+        if (!this.props.searchResultsLoaded && this.props.currentStep === 1) {
+            // reload search result when user refreshes FlightSearchResults page
+            this.props.reloadSearchResults()
+        }
     }
 
     getView = () => {
-        var { currentStep, isRoundTrip,
+        var { searchResultsLoaded,
+            currentStep, isRoundTrip,
             validForReservation, toReservation,
             flightDepartFrom, flightArriveTo,
             flightFromDate, flightToDate,
-            departFlightTime, returnFlightTime } = this.props
+            departFlightTime, returnFlightTime,
+            departFlights, returnFlights,
+            selectedDepartFlight, selectedReturnFlight } = this.props
         switch (currentStep) {
             case 0:
                 return <SearchField />
             case 1:
                 return (
                     <React.Fragment>
-                        <FlightSearchResults type={'Depart'} />
                         {
-                            isRoundTrip &&
-                            <FlightSearchResults type={'Return'} />
-                        }
-                        {
-                            validForReservation &&
-                            <div className="uk-width-1-1">
-                                <button className="uk-button uk-button-primary uk-padding" onClick={() => toReservation()}>
-                                    Continue To Reservation
-                                </button>
-                            </div>
+                            searchResultsLoaded &&
+                            <React.Fragment>
+                                <FlightSearchResults type={'Depart'} flights={departFlights} />
+                                {
+                                    isRoundTrip &&
+                                    <FlightSearchResults type={'Return'} flights={returnFlights} />
+                                }
+                                {
+                                    validForReservation &&
+                                    <div className="uk-width-1-1">
+                                        <button className="uk-button uk-button-primary uk-padding" onClick={() => toReservation()}>
+                                            Continue To Reservation
+                                    </button>
+                                    </div>
+                                }
+                            </React.Fragment>
                         }
                     </React.Fragment>
                 )
@@ -41,6 +53,7 @@ class Booking extends Component {
                 return (
                     <FlightReservationMain>
                         <FlightSummary
+                            selectedDepartFlight={{ ...selectedDepartFlight, flightDepartFrom, flightArriveTo }}
                             TYPE="Depart"
                             DEPART_FROM={flightDepartFrom}
                             ARRIVE_TO={flightArriveTo}
@@ -50,6 +63,7 @@ class Booking extends Component {
                         {
                             isRoundTrip &&
                             <FlightSummary
+                                selectedReturnFlight={{ ...selectedReturnFlight, flightDepartFrom, flightArriveTo }}
                                 TYPE="Return"
                                 DEPART_FROM={flightArriveTo}
                                 ARRIVE_TO={flightDepartFrom}
@@ -75,6 +89,7 @@ class Booking extends Component {
 
 const mapStateToProps = state => ({
     loaded: state.booking.loaded,
+    searchResultsLoaded: state.booking.searchResultsLoaded,
     currentStep: state.booking.current,
     isRoundTrip: state.booking.isRoundTrip,
     validForReservation: state.booking.validForReservation,
@@ -84,10 +99,15 @@ const mapStateToProps = state => ({
     flightToDate: state.booking.dateInputs.toDate,
     departFlightTime: state.booking.ticket.departFlight,
     returnFlightTime: state.booking.ticket.returnFlight,
+    departFlights: state.booking.departFlights,
+    returnFlights: state.booking.returnFlights,
+    selectedDepartFlight: state.booking.ticket.departFlight,
+    selectedReturnFlight: state.booking.ticket.returnFlight,
 })
 
 const mapDispatchToProps = dispatch => ({
     getAirportList: () => dispatch({ type: "AIRPORT_GET_LIST" }),
+    reloadSearchResults: () => dispatch({ type: "BOOKING_APPLY_SEARCH" }),
     toReservation: () => dispatch({ type: "BOOKING_TO_RESERVATION" })
 })
 

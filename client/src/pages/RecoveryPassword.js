@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { validateStrongPassword } from 'utils/validators';
-import PasswordField from '../components/PasswordField';
+import PasswordField from 'components/PasswordField';
 
 export default function RecoveryPassword(props) {
     const dispatch = useDispatch()

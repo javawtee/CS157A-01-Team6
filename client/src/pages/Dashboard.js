@@ -1,18 +1,44 @@
-import React, {Component} from 'react'
-import Notifications from 'components/Dashboard/Notifications'
-import FlightHistory from 'components/Dashboard/FlightHistory'
+import React, { Component, useState } from 'react';
+import { connect } from 'react-redux';
+import FlightTable from 'components/Dashboard/FlightTable';
+import { isAfter, compareAsc, compareDesc } from "date-fns";
 
 class Dashboard extends Component {
+    componentDidMount = () => {
+        this.props.getFlights()
+    }
 
     render() {
+        const { flights } = this.props
+        var reservations, pastflights
+        if (flights) {
+            reservations =
+                flights.filter(flight => isAfter(new Date(flight.departTime), new Date()))
+                    .sort((p, c) => compareAsc(new Date(p.departTime), new Date(c.departTime)))
+            pastflights =
+                flights.filter(flight => !reservations.includes(flight))
+                    .sort((p, c) => compareDesc(new Date(p.arriveTime), new Date(c.arriveTime)))
+        }
         return (
-        <div className="uk-background-cover" uk-height-viewport="expand: true">
-                <div className="uk-width-1-2@s uk-align-center"></div>
-                <h1>Dashboard</h1>
-                <FlightHistory/>
+            <div>
+                {
+                    flights &&
+                    <div className="uk-margin-top" uk-height-viewport="expand: true" style={{ backgroundColor: "white" }}>
+                        <FlightTable caption="Reservations" data={reservations} />
+                        <FlightTable caption="Flight History" data={pastflights} />
+                    </div>
+                }
             </div>
         )
     }
 }
 
-export default Dashboard
+const mapStateToProps = state => ({
+    flights: state.user.flights
+})
+
+const mapDispatchToProps = dispatch => ({
+    getFlights: () => dispatch({ type: "USER_GET_FLIGHTS" })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

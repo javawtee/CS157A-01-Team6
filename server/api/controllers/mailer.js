@@ -1,29 +1,49 @@
 const nodemailer = require("nodemailer");
 
-
-    var transporter = nodemailer.createTransport({
+var transporter = nodemailer.createTransport({
     service: 'gmail',
-    debug:true,
+    debug: true,
     auth: {
         user: 'cs157ateam6@gmail.com', // generated ethereal user
-        pass:  'Team6_123456'// generated ethereal password
+        pass: 'Team6_123456'// generated ethereal password
     }
-});
+})
 
-    // send mail with defined transport object
-    var mailOptions = function (toEmail, resetLink)  { 
-        return {
+// send mail with defined transport object
+var mailOptions = function ({ recipients, subject, content, html }) {
+    return {
         from: 'cs157ateam6@gmail.com', // sender address
-        to: toEmail, // list of receivers
-        subject: 'Reset Password', // Subject line
-        text: `Please click the following link to reset password\n ${resetLink}` 
-        }
-    };
+        to: recipients, // list of receivers
+        subject: subject, // Subject line
+        text: content,
+        html
+    }
+}
 
-    transporter.sendMail(mailOptions, function(err, info){
+transporter.sendMail(mailOptions, function (err, info) {
+    console.log(mailOptions)
+    if (err) {
+        // Best practice: write log
+        console.log(err);
+    } else {
+        // Best practice: write log
+        console.log('Email sent: ' + info.response)
+    }
+})
+
+
+
+module.exports = function (systemoptions, next) {
+    transporter.sendMail(mailOptions(systemoptions), function (err, info) {
         if (err) {
+            // Best practice: write log
             console.log(err);
-        }else{
-            console.log('Email sent: ' + info.responce)
+        } else {
+            // Best practice: write log
+            if (next) {
+                next()
+            } else
+                console.log("Email sent")
         }
-    });
+    })
+}

@@ -2,16 +2,18 @@ import { format } from "date-fns";
 
 export const flight = {
     getSearchFlightCall: payload => {
-        let { isRoundTrip, searchInputs, dateInputs, maxPrice, numOfPassengers, sortByInput, flightClassInput, flightTimeInputs } = payload
+        let { isRoundTrip, searchInputs, dateInputs, maxPrice, numOfPassengers, sortById, flightClassId, departTimeId, arriveTimeId } = payload
         let fromDate = format(dateInputs.fromDate, "yyyy/MM/dd")
         let reqConditions = ""
-        // for depart flight
-        reqConditions += `depart=${searchInputs.flightFrom}|${fromDate}|${flightTimeInputs.fromOption.id}&`
+        // roundtrip?
+        reqConditions += `roundtrip=${isRoundTrip ? "y" : "n"}&`
+        // from and to flights
+        reqConditions += `depart=${searchInputs.flightFrom}|${fromDate}|${departTimeId}&arrive=${searchInputs.flightTo}`
         if (isRoundTrip) {
             let toDate = format(dateInputs.toDate, "yyyy/MM/dd")
-            reqConditions += `return=${searchInputs.flightTo}|${toDate}|${flightTimeInputs.toOption.id}&`
+            reqConditions += `|${toDate}|${arriveTimeId}`
         }
-        reqConditions += `fclass=${flightClassInput.id}&max=${maxPrice}&passengers=${numOfPassengers}&sort=${sortByInput.id}`
+        reqConditions += `&fclass=${flightClassId}&max=${maxPrice}&passengers=${numOfPassengers}&sort=${sortById}`
         return reqConditions
-    }
+    },
 }

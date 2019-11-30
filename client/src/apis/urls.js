@@ -16,14 +16,17 @@ const urls = {
         confirmrecoverylink: `${userRoot}/confirmrecoverylink`,
         updatepassword: `${userRoot}/updatepassword`,
         updatepreference: `${userRoot}/updatepreference`,
+        getflights: `${userRoot}/getflights`,
+        getbookingdetail: `${userRoot}/getbookingdetail`,
+        cancelbooking: `${userRoot}/cancelbooking`,
     },
     airport: {
         getlist: `${airportRoot}`
     },
     flight: {
         searchflight: `${flightRoot}`,
+        finalizebooking: `${flightRoot}/finalizebooking`
     },
-
 }
 
 export default urls

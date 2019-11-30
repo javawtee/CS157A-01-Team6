@@ -10,14 +10,12 @@ const initial = {
         fromDate: '',
         toDate: ''
     },
-    flightTimeInputs: {
-        fromOption: '', // flight time
-        toOption: '', // flight time
-    },
+    arriveTimeId: '',
+    departTimeId: '',
     numOfPassengers: 1,
-    flightClassInput: '',
+    flightClassId: '',
     maxPrice: 0,
-    sortByInput: '',
+    sortById: '',
 }
 
 const createSession = () => {
@@ -60,6 +58,9 @@ const searchSession = {
             });
             return setSession(session)
         }
+    },
+    remove: () => {
+        sessionStorage.removeItem(sessionName)
     }
 }
 

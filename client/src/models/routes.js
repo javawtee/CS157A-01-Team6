@@ -1,5 +1,6 @@
 import Welcome from "pages/Welcome"
 import Dashboard from "pages/Dashboard";
+import BookingDetail from "pages/BookingDetail"
 import UserProfile from 'pages/UserProfile'
 import Booking from "pages/Booking";
 import P404 from "pages/P404";
@@ -22,6 +23,13 @@ const routes = [
         path: "/dashboard",
         component: Dashboard,
         navItemName: "Dashboard",
+    },
+    {
+        id: "bookingdetail",
+        requiredAuthentication: true,
+        exact: true,
+        path: "/booking=:detail",
+        component: BookingDetail
     },
     {
         id: "profile",
