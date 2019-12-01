@@ -16,20 +16,43 @@ function getPreferredTime(id) {
 }
 
 function getOptions(fclass, max, passengers, sort) {
-    // TODO: fclass, max, passengers and sort(price) are used to find ticket
+    var seats = null
+    var maxPrice = null
+    switch (fclass) {
+        case "eco":
+            seats = `and economy_seats >= ${passengers}`
+            maxPrice = `and economy_price <= ${max}`
+            break
+        case "bus":
+            seats = `and business_seats >= ${passengers}`
+            maxPrice = `and business_price <= ${max}`
+            break
+        default: // fclass = 'all'
+            seats = `and (economy_seats >= ${passengers} or business_seats >= ${passengers})`
+            maxPrice = ""
+    }
+
     var sortBy = null
     switch (sort) {
         case 'depTime':
             sortBy = 'time(departure_datetime) ASC'
-            break;
+            break
         case 'arrTime':
             sortBy = 'time(arrival_datetime) ASC'
-            break;
+            break
         case "price":
-            sortBy = "economy_price ASC, business_price ASC"
-            break;
+            if (fclass === "eco") {
+                sortBy = "economy_price ASC"
+            } else if (fclass === "bus") {
+                sortBy = "business_price ASC"
+            } else {
+                sortBy = "economy_price ASC, business_price ASC"
+            }
+            break
+        default:
+            sortBy = ""
     }
-    return ` order by ${sortBy}`;
+    return `${seats} ${maxPrice} order by ${sortBy}`;
 }
 
 exports.searchFlight = function (req, res, next) {
@@ -50,15 +73,12 @@ exports.searchFlight = function (req, res, next) {
         var { fclass, max, passengers, sort } = req.query
         var extraConditions = getOptions(fclass, max, passengers, sort) + ";"
         var query = `select flight_id as flightId, 
-                     time_format(time(departure_datetime), "%H:%i") as depTime, 
-                     time_format(time(arrival_datetime), "%H:%i") as arrTime, 
+                     departure_datetime as depTime, 
+                     arrival_datetime as arrTime, 
                      economy_price as ecoPrice, economy_seats as ecoSeats,
                      business_price as busPrice, business_seats as busSeats
                      from flight 
-                     where depart_from=? and date(departure_datetime)=? and arrive_to=?
-                     and (economy_seats >= ${passengers} or business_seats >= ${passengers}
-                            or (economy_seats + business_seats) >= ${passengers})
-                     and economy_price <= ${max}`
+                     where depart_from=? and date(departure_datetime)=? and arrive_to=?`
 
         var queryForDepart = query + getFlightTime(depTime)
         queryForDepart += extraConditions
@@ -66,7 +86,6 @@ exports.searchFlight = function (req, res, next) {
         conn.query(queryForDepart, [depCode, depDate, arrCode], (err, result) => {
             if (err) res.status(500).jsonp(err)
             else if (result) {
-
                 const departFlights = result
                 var returnFlights = []
                 if (req.query.roundtrip === "y") {
@@ -181,7 +200,7 @@ exports.finalizeBooking = function (req, res, next) {
                                                     subject: "AST 6 - Booking Confirmation",
                                                     content: `Hi there, \nThanks for choosing our service
                                                                         \n\nHere is your departure booking number: ${departBookingNumber}
-                                                                        \nHere is your departure booking number: ${returnBookingNumber}`
+                                                                        \nHere is your return booking number: ${returnBookingNumber}`
                                                 })
                                             }
                                             res.jsonp("success") // success inserted return flight

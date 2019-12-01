@@ -66,10 +66,7 @@ function* TO_RESERVATION() {
 
 function* FINALIZE_BOOKING({ payload }) {
     try {
-        let retResult = yield call(services.finalizeBooking, payload)
-        if (retResult.data !== "You have booked this flight") {
-            // TODO: check the logic
-        }
+        yield call(services.finalizeBooking, payload)
         yield put({
             type: "SET_FINALIZE_BOOKING"
         })
