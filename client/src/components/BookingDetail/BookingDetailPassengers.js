@@ -29,9 +29,9 @@ export default function BookingDetailPassengers(props) {
                 </td>
                 <td>{passenger.passengerId}</td>
                 <td>{passenger.IDType}</td>
-                <td>{passenger.firstName}</td>
-                <td>{passenger.lastName}</td>
-                <td>{passenger.middleInitial}</td>
+                <td className="uk-text-capitalize">{passenger.firstName}</td>
+                <td className="uk-text-capitalize">{passenger.lastName}</td>
+                <td className="uk-text-capitalize">{passenger.middleInitial}</td>
                 <td>{passenger.confirmationEmail || "N/A"}</td>
             </tr >
         )

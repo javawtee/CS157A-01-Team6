@@ -51,7 +51,13 @@ class Booking extends Component {
                 )
             case 2:
                 return (
-                    <FlightReservationMain>
+                    <FlightReservationMain
+                        SEATS_LEFT={() => {
+                            var departSeats = selectedDepartFlight.ecoSeats || selectedDepartFlight.busSeats
+                            var returnSeats = selectedReturnFlight ? selectedReturnFlight.ecoSeats || selectedReturnFlight.busSeats : 5
+                            return departSeats < returnSeats ? departSeats : returnSeats
+                        }}
+                    >
                         <FlightSummary
                             selectedDepartFlight={{ ...selectedDepartFlight, flightDepartFrom, flightArriveTo }}
                             TYPE="Depart"

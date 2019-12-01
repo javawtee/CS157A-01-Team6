@@ -170,11 +170,13 @@ exports.cancelBooking = function (req, res) {
       [bookingNumber, passengerIds], (err, results) => {
         if (err) res.status(500).jsonp(err)
         else if (results) {
-          conn.query(`select flight_id, flight_class from user_book_flight where user_id=? and booking_number=?;`, [req.session.user.ID, bookingNumber],
+          conn.query(`select flight_id, booking_class from user_book_flight, booking 
+                      where user_id=? and booking.booking_number=? and user_book_flight.booking_number = booking.booking_number;`,
+            [req.session.user.ID, bookingNumber],
             (err, result) => {
               if (err) res.status(500).jsonp(err)
               else if (result) {
-                const flightClass = result[0].flight_class
+                const flightClass = result[0].booking_class
                 conn.query(`update flight set ${flightClass}_seats=(${flightClass}_seats + ${passengerIds.length})
                   where flight_id=?;`, [result[0].flight_id], (err, result) => {
                   if (err) res.status(500).jsonp(err)
