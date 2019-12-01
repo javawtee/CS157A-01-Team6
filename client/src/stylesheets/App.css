@@ -38,3 +38,12 @@
 .uk-modal {
   padding: 0
 }
+
+.uk-table th{
+  vertical-align: inherit !important;
+}
+
+#user-profile li {
+  border: 1px solid black;
+  margin-top: 5px;
+}

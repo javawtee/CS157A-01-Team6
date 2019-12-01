@@ -7,8 +7,13 @@ const passenger = () => {
         middleInitial: '',
         IDType: IDTypeOptions[1].text,
         IDNumber: '',
-        email: '',
+        reservationEmail: '',
         sendConfirmation: 'no',
+        validfirstName: true,
+        validlastName: true,
+        validmiddleInitial: true,
+        validIDNumber: true,
+        validreservationEmail: true,
     }
 }
 

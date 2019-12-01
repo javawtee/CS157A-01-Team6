@@ -1,7 +1,5 @@
 import React from "react";
-import NavBar from "components/NavBar";
-import ProfileForm from "components/ProfileForm"
-import ReservationDetail from 'components/ReservationDetail'
+import BookingDetailPassengers from "../components/BookingDetail/BookingDetailPassengers";
 
 export default function DevTest() {
   return (
@@ -17,8 +15,7 @@ export default function DevTest() {
       <hr style={{ borderTop: "4px solid #151414" }} />
 
       {/* Add Component here */}
-
-     <ReservationDetail/>
+      <BookingDetailPassengers />
     </div>
   );
 }

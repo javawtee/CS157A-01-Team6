@@ -1,5 +1,8 @@
 var createError = require('http-errors');
 var express = require('express');
+var bodyParser = require('body-parser');
+const exphbs = require('express-handlebars');
+const nodemailer = require('nodemailer');
 var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -14,6 +17,12 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Static folder
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 const {
   // Can add port and NODE_ENV here.
@@ -55,6 +64,12 @@ app.use(session( {
     //secure: IN_PROD
   }
 }))
+
+/*
+app.get('/', (req, res) => {
+  res.render('contact');
+});
+*/
 
 //app.use('/', express.static(path.join(__dirname, 'demo')));
 //require('./routes')

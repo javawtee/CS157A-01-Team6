@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isAfter } from 'date-fns';
 import Autocomplete from '../Autocomplete';
 
+import converter from "utils/converter";
 import { generateOptions } from 'utils/generators';
 import flightTimeOptions from 'models/flightTimeOptions';
 import flightClassOptions from 'models/flightClassOptions';
 import sortByOptions from 'models/sortByOptions';
-
-import UIkit from 'uikit';
 
 export default function SearchField(props) {
   const dispatch = useDispatch()
@@ -19,21 +18,24 @@ export default function SearchField(props) {
     airportList: state.airport.list
   }))
 
-  const { MAX_PRICE, DEPART_TIME, ARRIVE_TIME, FLIGHT_CLASS, SORT_BY } = props
-  const DEFAULT_MAX_PRICE = MAX_PRICE || 2000
-  const DEFAULT_DEPART_TIME = DEPART_TIME || flightTimeOptions[0]
-  const DEFAULT_ARRIVE_TIME = ARRIVE_TIME || flightTimeOptions[0]
-  const DEFAULT_FLIGHT_CLASS = FLIGHT_CLASS || flightClassOptions[0]
-  const DEFAULT_SORT_BY = SORT_BY || sortByOptions[0]
+  const { departTime, arriveTime, flightClass, maxPrice, sortBy, DEFAULT_MAX_PRICE } =
+    useSelector(state => ({
+      departTime: state.user.preference.departTime,
+      arriveTime: state.user.preference.arriveTime,
+      flightClass: state.user.preference.flightClass,
+      maxPrice: state.user.preference.maxPrice,
+      sortBy: state.user.preference.sortBy,
+      DEFAULT_MAX_PRICE: state.user.DEFAULT_MAX_PRICE,
+    }))
 
   const [tripType, setTripType] = useState({ roundtrip: true })
   const [searchInputs, setSearchInputs] = useState({ flightFrom: '', flightTo: '' });
   const [dateInputs, setDateInputs] = useState({ fromDate: new Date(), toDate: new Date() })
-  const [flightTimeInputs, setFlightTimeInputs] = useState({ fromOption: DEFAULT_DEPART_TIME, toOption: DEFAULT_ARRIVE_TIME })
+  const [flightTimeInputs, setFlightTimeInputs] = useState({ fromOption: departTime, toOption: arriveTime })
   const [numOfPassengers, setNumOfPassengers] = useState(1)
-  const [flightClassInput, setFlightClassInput] = useState(DEFAULT_FLIGHT_CLASS)
-  const [maxPrice, setMaxPrice] = useState(+DEFAULT_MAX_PRICE)
-  const [sortByInput, setSortByInput] = useState(DEFAULT_SORT_BY)
+  const [flightClassInput, setFlightClassInput] = useState(flightClass)
+  const [maxPriceInput, setMaxPrice] = useState(+maxPrice)
+  const [sortByInput, setSortByInput] = useState(sortBy)
 
   const [validSearchInputs, validateSearchInputs] = useState({ flightFrom: true, flightTo: true })
 
@@ -87,21 +89,26 @@ export default function SearchField(props) {
 
     dispatch({
       type: "BOOKING_APPLY_SEARCH",
-      payload: {
+      inputs: {
         isRoundTrip: tripType.roundtrip,
         searchInputs: {
           flightFrom: extractAirportCode(flightFrom),
           flightTo: extractAirportCode(flightTo),
         },
-        maxPrice: maxPrice === DEFAULT_MAX_PRICE ? "any" : maxPrice,
-        dateInputs, flightTimeInputs, numOfPassengers, flightClassInput, sortByInput,
+        maxPrice: maxPriceInput,
+        dateInputs,
+        departTimeId: converter.optionTextToId(flightTimeOptions, flightTimeInputs.fromOption),
+        arriveTimeId: converter.optionTextToId(flightTimeOptions, flightTimeInputs.toOption),
+        numOfPassengers,
+        flightClassId: converter.optionTextToId(flightClassOptions, flightClassInput),
+        sortById: converter.optionTextToId(sortByOptions, sortByInput),
       }
     })
   }
 
   return (
     <form
-      className='uk-margin-auto uk-margin-small-top uk-card uk-card-default uk-card-small uk-card-body uk-grid-small uk-width-1-2@s' uk-grid=''
+      className='uk-margin-auto uk-margin-small-top uk-card uk-card-default uk-card-small uk-card-body uk-grid-small uk-width-1-2@l' uk-grid=''
       onSubmit={handleSubmit}
     >
       <div className='uk-card-header'><h4>Book a Flight</h4></div>
@@ -167,12 +174,12 @@ export default function SearchField(props) {
           </small>
         </div>
         <div className='uk-width-1-3 uk-width-1-5@s'>
-          <small>Arrive Date</small>
+          <small>Return Date</small>
           <DatePicker className='uk-input uk-form-small' dateFormat='MM/dd'
             minDate={dateInputs.fromDate} selected={dateInputs.toDate} onChange={handleToDateChange} disabled={!tripType.roundtrip} />
         </div>
         <div className='uk-width-1-4@s'>
-          <small>Arrive time</small>
+          <small>Return time</small>
           {generateOptions('uk-select uk-form-small', handleSelectFlightTimeOption,
             flightTimeInputs.toOption, flightTimeOptions, { name: "toOption", disabled: !tripType.roundtrip })}
         </div>
@@ -186,8 +193,8 @@ export default function SearchField(props) {
               {generateOptions('uk-select uk-form-small', handleSelectFlightClassOption, flightClassInput, flightClassOptions)}
             </div>
             <div className='uk-margin-small-top uk-width-1-3@s'>
-              <small>Max price: {maxPrice === DEFAULT_MAX_PRICE ? "Any" : maxPrice} </small>
-              <input className='uk-range' type='range' min='50' max={DEFAULT_MAX_PRICE} step='50' value={maxPrice} onChange={handleSetMaxPrice} />
+              <small>Max price: {maxPriceInput === DEFAULT_MAX_PRICE ? "Any" : maxPriceInput} </small>
+              <input className='uk-range' type='range' min='50' max={DEFAULT_MAX_PRICE} step='50' value={maxPriceInput} onChange={handleSetMaxPrice} />
             </div>
             <div className='uk-margin-small-top uk-width-1-3@s'>
               <small>Sort by</small>
