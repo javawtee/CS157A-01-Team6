@@ -1,10 +1,10 @@
 # Apache setup (Windows)
 1. (Required) Download and install [vc_redist_[x86 | x64]](https://www.microsoft.com/en-US/download/details.aspx?id=48145)<br/>
-[Preferred installation of both]
+[Recommend to install for both computer architecture]
 2. (Required) Download [Apache Lounge](https://www.apachelounge.com/download/) <br/>
-[Preferred *_x64.zip]
+[Recommend *_x64.zip]
 3. Unzip downloaded Apache package
-4. Copy and paste Apache24 folder to C: drive
+4. Copy and paste Apache24 folder to C drive
 5. Run cmd as administration
 6. Change directory to C:/Apache24/bin<br/>
 Type the following command to finish installation of Apache
