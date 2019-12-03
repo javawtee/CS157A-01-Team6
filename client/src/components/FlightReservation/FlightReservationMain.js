@@ -10,7 +10,8 @@ export class FlightReservationMain extends Component {
         super(props)
         this.state = {
             // limit: allowed number of passengers on each reservation
-            seatsLeft: 5,
+            // maximum passengers for a reservation is 5
+            seatsLeft: props.SEATS_LEFT() < 5 ? props.SEATS_LEFT() : 5,
             passengers: [getPassengerForm()]
         }
     }
@@ -27,7 +28,7 @@ export class FlightReservationMain extends Component {
 
     handleAddNewPassengerForm = e => {
         var { seatsLeft, passengers } = this.state
-        if (passengers.length === seatsLeft) return alert(`Maximum of ${seatsLeft} passengers per reservation`)
+        if (passengers.length === seatsLeft) return alert(`Reached maximum of ${seatsLeft} passengers`)
         var newPassengers = passengers
         newPassengers.push(getPassengerForm())
         this.setState({ passengers: newPassengers })

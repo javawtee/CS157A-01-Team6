@@ -19,9 +19,6 @@ export class FlightSearchResults extends Component {
     }
 
     handleSelectFlight = e => {
-        // TODO: when select flight, it not saving correctly in session or not distinguish between eco and bus
-        // type: [0]; flightClass: [1]; indexOfData: [2]
-
         const breakdown = e.split('-')
         const flightData = { ...this.props.flights[breakdown[2]] } // duplicate, not using the old data to prevent losing when update Selected
         if (breakdown[1] === 'economy') {
@@ -49,7 +46,6 @@ export class FlightSearchResults extends Component {
             return parse(string, "HH:mm", new Date(this.state.selectedDate))
         }
 
-        console.log(sorted)
         switch (value) {
             case "Depart Time":
                 sorted = sorted.sort((prev, curr) => compareAsc(convertStringToDate(prev.depTime), convertStringToDate(curr.depTime)))

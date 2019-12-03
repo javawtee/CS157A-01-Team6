@@ -124,7 +124,7 @@ exports.getFlights = function (req, res, next) {
                 (select flight_id, city as arriveTo from flight join airport on arrive_to = code) a
                 where 
                 user_id=? and u.flight_id = f.flight_id and 
-                f.flight_id = d.flight_id and f.flight_id = a.flight_id`, [req.session.user.ID],
+                f.flight_id = d.flight_id and f.flight_id = a.flight_id;`, [req.session.user.ID],
       (err, results) => {
         if (err) res.status(500).jsonp(err)
         else if (results) {
@@ -170,11 +170,13 @@ exports.cancelBooking = function (req, res) {
       [bookingNumber, passengerIds], (err, results) => {
         if (err) res.status(500).jsonp(err)
         else if (results) {
-          conn.query(`select flight_id, flight_class from user_book_flight where user_id=? and booking_number=?;`, [req.session.user.ID, bookingNumber],
+          conn.query(`select flight_id, booking_class from user_book_flight, booking 
+                      where user_id=? and booking.booking_number=? and user_book_flight.booking_number = booking.booking_number;`,
+            [req.session.user.ID, bookingNumber],
             (err, result) => {
               if (err) res.status(500).jsonp(err)
               else if (result) {
-                const flightClass = result[0].flight_class
+                const flightClass = result[0].booking_class
                 conn.query(`update flight set ${flightClass}_seats=(${flightClass}_seats + ${passengerIds.length})
                   where flight_id=?;`, [result[0].flight_id], (err, result) => {
                   if (err) res.status(500).jsonp(err)
@@ -199,7 +201,7 @@ exports.cancelBooking = function (req, res) {
 
 exports.sendRecoveryLink = function (req, res, next) {
   if (req.query.email) {
-    conn.query("select user_id from user where email=?", [req.query.email], (err, result) => {
+    conn.query("select user_id from user where email=?;", [req.query.email], (err, result) => {
       if (err) res.status(500).jsonp(err)
       else if (result && result.length === 1) {
         var now = new Date().getTime()

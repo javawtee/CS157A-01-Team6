@@ -2,9 +2,6 @@ import React from 'react';
 import { format } from "date-fns";
 
 export default function FlightTable(props) {
-
-    console.log(props.data)
-
     const populateTableRows = props.data.map((row, id) =>
         <tr key={id}>
             <td className="uk-table-link">

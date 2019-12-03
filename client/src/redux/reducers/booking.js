@@ -32,7 +32,7 @@ export default function bookingReducer(state = initialState, action) {
         case "SET_GO_SEARCH":
             bookingSession.navTo(0)
             ticketSession.clearSession()
-            return { ...state, ticket: { departFlight: null, returnFlight: null }, current: 0 }
+            return { ...state, validForReservation: false, ticket: { departFlight: null, returnFlight: null }, current: 0 }
         case "SET_FINALIZE_BOOKING":
             // clear all session for booking
             bookingSession.remove()
