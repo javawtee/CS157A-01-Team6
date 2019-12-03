@@ -20,14 +20,16 @@ exports.getList = function (req, res, next) {
 exports.signedIn = function (req, res, next) {
   if (req.session.user) {
     res.jsonp({ info: req.session.user, preference: req.session.user.preference })
+  } else {
+    res.jsonp(undefined)
   }
-  res.jsonp(undefined)
 }
 
 exports.signUp = function (req, res, next) {
+  console.log(req.body)
   var { firstName, lastName, middleInitial, signupEmail, signupPassword } = req.body
   // var activate_link = uuidv5(signupEmail, '1b671a64-40d5-491e-99b0-da01ff1f3341')
-  if (firstName && lastName && middleInitial && signupEmail && signupPassword) {
+  if (firstName && lastName && signupEmail && signupPassword) {
     conn.query(`insert into user (user_id, email, password, first_name, last_name, middle_initial) 
                 values (sha1(?), ?, sha2(?, 0), ?, ?, ?);`, [signupEmail, signupEmail, signupPassword, firstName, lastName, middleInitial],
       (err, result) => {
