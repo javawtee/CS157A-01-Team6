@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FlightTable from 'components/Dashboard/FlightTable';
 import { isAfter, compareAsc, compareDesc } from "date-fns";

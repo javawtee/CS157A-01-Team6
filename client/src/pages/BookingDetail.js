@@ -24,7 +24,7 @@ export default function BookingDetail(props) {
             })
             setInitialLoaded(true)
         }
-    }, [initialLoaded])
+    }, [initialLoaded, bookingNumber])
 
     return (
         <div className="uk-width-1-1 uk-margin-top" style={{ background: "white" }} uk-grid="">

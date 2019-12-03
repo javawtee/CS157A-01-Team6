@@ -15,7 +15,7 @@ import FlightSummary from '../FlightSummary';
 // SELECTED_SORT_BY_ID_ID - required
 
 export default function ResultHeader(props) {
-    const { selected, TYPE, SELECTED_DATE, SELECTED_FLIGHT_TIME_ID, SELECTED_SORT_BY_ID } = props
+    const { selected, TYPE, SELECTED_DATE, SELECTED_SORT_BY_ID } = props
 
     const getDepartKey = () => {
         return "flight" + (TYPE === "Depart" ? "From" : "To")
