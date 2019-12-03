@@ -46,7 +46,6 @@ export class FlightSearchResults extends Component {
             return parse(string, "HH:mm", new Date(this.state.selectedDate))
         }
 
-        console.log(sorted)
         switch (value) {
             case "Depart Time":
                 sorted = sorted.sort((prev, curr) => compareAsc(convertStringToDate(prev.depTime), convertStringToDate(curr.depTime)))

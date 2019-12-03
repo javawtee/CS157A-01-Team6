@@ -124,7 +124,7 @@ exports.getFlights = function (req, res, next) {
                 (select flight_id, city as arriveTo from flight join airport on arrive_to = code) a
                 where 
                 user_id=? and u.flight_id = f.flight_id and 
-                f.flight_id = d.flight_id and f.flight_id = a.flight_id`, [req.session.user.ID],
+                f.flight_id = d.flight_id and f.flight_id = a.flight_id;`, [req.session.user.ID],
       (err, results) => {
         if (err) res.status(500).jsonp(err)
         else if (results) {
@@ -201,7 +201,7 @@ exports.cancelBooking = function (req, res) {
 
 exports.sendRecoveryLink = function (req, res, next) {
   if (req.query.email) {
-    conn.query("select user_id from user where email=?", [req.query.email], (err, result) => {
+    conn.query("select user_id from user where email=?;", [req.query.email], (err, result) => {
       if (err) res.status(500).jsonp(err)
       else if (result && result.length === 1) {
         var now = new Date().getTime()

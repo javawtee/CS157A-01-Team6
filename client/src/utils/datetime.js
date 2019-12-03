@@ -1,5 +1,5 @@
 import React from 'react'
-import { format, parse, differenceInHours } from 'date-fns'
+import { format, differenceInHours } from 'date-fns'
 
 export function getTimeIn12HourFormat(dateString) {
     //const time = parse(timeString, "HH:mm", new Date())

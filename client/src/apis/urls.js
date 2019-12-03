@@ -1,7 +1,7 @@
-const AppRoot = "/"
-const userRoot = "/user"
-const airportRoot = "/airport"
-const flightRoot = "/flight"
+const AppRoot = "/api"
+const userRoot = "/api/user"
+const airportRoot = "/api/airport"
+const flightRoot = "/api/flight"
 
 const urls = {
     App: {
