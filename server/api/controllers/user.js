@@ -122,8 +122,12 @@ exports.getFlights = function (req, res, next) {
     conn.query(`select booking_number as bookingNumber, departFrom, arriveTo, departure_datetime as departTime, arrival_datetime as arriveTime
                 from user_book_flight u,
                 flight f,
-                (select flight_id, city as departFrom from flight join airport on depart_from = code) d, 
-                (select flight_id, city as arriveTo from flight join airport on arrive_to = code) a
+                (select a.flight_id, city as departFrom
+                  from ( select flight_id, location_id from flight join airport on depart_from = code) a , location b
+                where a.location_id = b.location_id) d, 
+                (select a.flight_id, city as arriveTo
+                  from ( select flight_id, location_id from flight join airport on arrive_to = code) a , location b
+                where a.location_id = b.location_id) a
                 where 
                 user_id=? and u.flight_id = f.flight_id and 
                 f.flight_id = d.flight_id and f.flight_id = a.flight_id;`, [req.session.user.ID],
