@@ -86,7 +86,7 @@ module.exports = `
                                             <table border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td align="left" style="border-radius: 3px;" bgcolor="#17bef7">
-                                                <a class="button raised" href="http://localhost:3000" target="_blank" style="font-size: 14px; line-height: 14px; font-weight: 500; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 10px 25px; border: 1px solid #17bef7; display: inline-block;">BUTTON</a>
+                                                <a class="button raised" href="http://localhost" target="_blank" style="font-size: 14px; line-height: 14px; font-weight: 500; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 10px 25px; border: 1px solid #17bef7; display: inline-block;">VISIT WEBSITE</a>
                                                 </td>
                                             </tr>
                                             </table>

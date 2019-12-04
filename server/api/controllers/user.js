@@ -220,7 +220,7 @@ exports.sendRecoveryLink = function (req, res, next) {
               require('./mailer')({
                 recipients: [req.query.email],
                 subject: "AST6 - Password Recovery",
-                content: `Hi there, \nPlease change your password with the following link: http://localhost:3000${recovery_link}`
+                content: `Hi there, \nPlease change your password with the following link: http://localhost${recovery_link}`
               }, function () {
                 res.jsonp("success")
               })
