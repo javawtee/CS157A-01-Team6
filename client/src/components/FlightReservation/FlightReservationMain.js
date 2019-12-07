@@ -92,7 +92,9 @@ export class FlightReservationMain extends Component {
         let departFlight = this.props.children[0].props.selectedDepartFlight
         departFlight.flightClass = getFlightClass(departFlight)
         let returnFlight = this.props.children[1] ? this.props.children[1].props.selectedReturnFlight : undefined
-        returnFlight.flightClass = this.props.children[1] ? getFlightClass(returnFlight) : undefined
+        if (returnFlight) {
+            returnFlight.flightClass = this.props.children[1] ? getFlightClass(returnFlight) : undefined
+        }
         this.props.finalizeBooking({ departFlight, returnFlight, passengers })
     }
 

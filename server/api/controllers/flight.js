@@ -29,7 +29,7 @@ function getOptions(fclass, max, passengers, sort) {
             break
         default: // fclass = 'all'
             seats = `and (economy_seats >= ${passengers} or business_seats >= ${passengers})`
-            maxPrice = ""
+            maxPrice = `and (economy_price <= ${max} or business_price <= ${max})`
     }
 
     var sortBy = null
@@ -132,15 +132,18 @@ exports.finalizeBooking = function (req, res, next) {
             var { flightId, bookingNumber, flightClass } = flightData
             var [bookingClass, bookingPrice] = extractFlightClassAndPrice(flightData)
 
-            conn.query("insert into user_book_flight values (?,?,?,?);", [req.session.user.ID, bookingNumber, flightId, flightClass], (err, result) => {
+            conn.query("insert into user_book_flight values (?,?,?);", [req.session.user.ID, bookingNumber, flightId], (err, result) => {
+                console.log(err)
                 if (err) res.status(500).jsonp(err)
                 else if (result && result.affectedRows > 0) {
                     conn.query("insert into booking (booking_number, booking_class, booking_price) values (?, ?, ?);",
                         [bookingNumber, bookingClass, bookingPrice], (err, result) => {
+                            console.log(err)
                             if (err) res.status(500).jsonp(err)
                             else if (result && result.affectedRows > 0) {
                                 conn.query(`update flight set ${flightClass}_seats=(${flightClass}_seats - ${listOfPassengers.length})
                                     where flight_id=?`, [flightId], (err, result) => {
+                                    console.log(err)
                                     if (err) res.status(500).jsonp(err)
                                     else if (result && result.affectedRows > 0) {
                                         callback()
@@ -163,8 +166,12 @@ exports.finalizeBooking = function (req, res, next) {
         var confirmationEmails = []
         const departBookingNumber =
             SHA1(`${req.session.user.ID}${req.body.departFlight.flightDepartFrom}${new Date().getTime()}`).substr(5, 7).toUpperCase()
-        const returnBookingNumber =
-            SHA1(`${req.session.user.ID}${req.body.returnFlight.flightDepartFrom}${new Date().getTime()}`).substr(5, 7).toUpperCase()
+        console.log(req.body.returnFlight)
+        var returnBookingNumber = ""
+        if (req.body.returnFlight) {
+            returnBookingNumber =
+                SHA1(`${req.session.user.ID}${req.body.returnFlight.flightDepartFrom}${new Date().getTime()}`).substr(5, 7).toUpperCase()
+        }
 
         req.body.passengers.forEach(passenger => {
             const { IDNumber, IDType, firstName, lastName, middleInitial, reservationEmail } = passenger
@@ -182,11 +189,13 @@ exports.finalizeBooking = function (req, res, next) {
         conn.query(`insert into passenger (passenger_ID, ID_Type, passenger_firstname, 
                     passenger_lastname, passenger_middleinitial) values ?;`,
             [listOfPassengers], (err, result) => {
+                console.log(err)
                 if (err && err.errno !== 1062) { // errno 1062: duplicate entry
                     res.status(500).jsonp(err)
                 } else if ((err && err.errno === 1062) || (result && result.affectedRows > 0)) {
                     conn.query(`insert into booking_passenger(booking_number, passenger_ID, confirmation_email) values ?;`,
                         [bookingPassengers], (err, result) => {
+                            console.log(err)
                             if (err) res.status(500).jsonp(err)
                             else if (result && result.affectedRows > 0) {
                                 req.body.departFlight.bookingNumber = departBookingNumber
