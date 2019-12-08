@@ -8,9 +8,10 @@
 [Project proposal](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS157A-Team6-Project_proposal.docx)<br/>
 [Requirement report](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS157A-Team6-Requirement_report.docx)<br/>
 [Database Design](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS%20157A-Team6-DB_Design.docx)<br/>
-[Database Design-revised](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS%20157A-Team6-DB_Design_v2.docx)
+[Database Design-revised](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS%20157A-Team6-DB_Design_v2.docx)<br/>
+[Final Project Report](https://github.com/javawtee/CS157A-01-Team6/blob/master/Documentations/CS%20157A-Team6-Final_Project_Report.docx)
 
-#### Our project is in development, so that Apache is not being used
+#### For Development
 #### Assumed MySQL is set up properly as our setup (create schema and table), or check [this](https://github.com/javawtee/CS157A-01-Team6/tree/master/Setup/mysql)
 
 ## How to start (require [Node.js](https://nodejs.org/en/) and [Git](https://git-scm.com/downloads) installed)
@@ -39,4 +40,3 @@ Browser will automatically open to http://localhost:3000 or http://127.0.0.1:300
 
 **Login test** <br/>
 User ID and password [here](https://github.com/javawtee/CS157A-01-Team6/blob/master/Setup/mysql/test_login-raw-password.txt)
-
